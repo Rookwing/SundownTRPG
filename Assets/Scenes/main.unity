@@ -214,6 +214,16 @@ Prefab:
       propertyPath: groundGroup
       value: 
       objectReference: {fileID: 1370685044}
+    - target: {fileID: 114202844308577976, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64,
+        type: 2}
+      propertyPath: lerpOffset.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114202844308577976, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64,
+        type: 2}
+      propertyPath: lerpOffset.y
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64, type: 2}
   m_IsPrefabParent: 0
