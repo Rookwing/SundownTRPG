@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour
     #region Public Variables
     public GameObject groundGroup;
     public SelectionSquare selectionSquare;
+    public Camera mCamera;
+    public Vector2 selectPosition = Vector2.zero;
     #endregion
 
     #region Private Variables
@@ -32,7 +34,8 @@ public class GameManager : MonoBehaviour
     private GameObject baseFloorPrefab;
     [SerializeField]
     private Vector2 mapSize;
-    private GameObject[,] floors;
+    private GameObject[,] tiles;
+    private bool releasedInput = true;
     #endregion
 
     #region Enumerations
@@ -42,22 +45,68 @@ public class GameManager : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        floors = new GameObject[(int)mapSize.x, (int)mapSize.y];
-        GenerateFloor();
+        mCamera = Camera.main;
+        tiles = new GameObject[(int)mapSize.x, (int)mapSize.y];
+
+        GenerateMap();
+    }
+
+    private void Update()
+    {
+        if(Time.timeScale != 0) //ANYTHING IN THIS BLOCK ADHERES TO PAUSING
+        {
+            GetInput();
+
+        }                       //END OF PAUSING BLOCK
+        
     }
     #endregion
 
     #region Custom Methods
-    private void GenerateFloor()
+    private void GetInput()
     {
 
+        if (releasedInput)
+        {
+            if (Input.GetAxis("Horizontal") > 0) //Right direction
+            {
+                selectPosition += Vector2.right;
+                releasedInput = false;
+            }
+            else if (Input.GetAxis("Horizontal") < 0) // left
+            {
+                selectPosition += Vector2.left;
+                releasedInput = false;
+            }
+            else if (Input.GetAxis("Vertical") > 0) //up
+            {
+                selectPosition += Vector2.up;
+                releasedInput = false;
+            }
+            else if (Input.GetAxis("Vertical") < 0) //down
+            {
+                selectPosition += Vector2.down;
+                releasedInput = false;
+            }
+        }
+        else
+        {
+            if ((Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0))
+            {
+                releasedInput = true;
+            }
+        }
+    }
+
+    private void GenerateMap()
+    {
         for (int i = 0; i < mapSize.x; i++)
         {
             for (int j = 0; j < mapSize.y; j++)
             {
-                floors[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform);
-                floors[i, j].transform.Translate(new Vector2(i, j));
-                floors[i, j].name = "Floor (" + i + "," + j + ")";
+                tiles[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform);
+                tiles[i, j].transform.Translate(new Vector2(i, j));
+                tiles[i, j].name = "Tile (" + i + "," + j + ")";
             }
         }
     }
