@@ -309,11 +309,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20067e1f0f5f3c741ad2e02dd009461c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundGroup: {fileID: 0}
+  selectionSquare: {fileID: 114202844308577976}
   baseFloorPrefab: {fileID: 1232241717606484, guid: 3183ba2e4c4e9124bb793240aeb48a9d,
     type: 2}
-  groundGroup: {fileID: 0}
-  mapSize: {x: 10, y: 10}
-  selectionSquare: {fileID: 114202844308577976}
+  mapSize: {x: 5, y: 5}
 --- !u!114 &114879851509778940
 MonoBehaviour:
   m_ObjectHideFlags: 1
