@@ -31,7 +31,7 @@ public class SelectionSquare : MonoBehaviour
     #endregion
 
     #region Enumerations
-    //Made an enumerator to keep the corners staight. Arrays suck.
+    //Made an enumerator to keep the corners straight. Arrays suck.
     private enum Corner
     {
         TopLeft =0,
@@ -56,7 +56,7 @@ public class SelectionSquare : MonoBehaviour
     }
     private void Update()
     {
-        if((Vector2)transform.position != GameManager._gm.selectPosition)
+        if(transform.position != GameManager._gm.selectPosition)
         {
             if(hovering)
             {
@@ -73,6 +73,7 @@ public class SelectionSquare : MonoBehaviour
                 hovering = true;
             }
         }
+
         if (hovering == true)
         {
             TopLeftTri.transform.localPosition = Vector2.Lerp(cornerPos[(int)Corner.TopLeft], lerpPos[(int)Corner.TopLeft], Mathf.PingPong(Time.time*2, 1));

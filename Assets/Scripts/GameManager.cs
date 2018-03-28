@@ -26,7 +26,7 @@ public class GameManager : MonoBehaviour
     public GameObject groundGroup;
     public SelectionSquare selectionSquare;
     public Camera mCamera;
-    public Vector2 selectPosition = Vector2.zero;
+    public Vector3 selectPosition = Vector2.zero;
     #endregion
 
     #region Private Variables
@@ -68,24 +68,24 @@ public class GameManager : MonoBehaviour
 
         if (releasedInput)
         {
-            if (Input.GetAxis("Horizontal") > 0) //Right direction
+            if (Input.GetAxis("Horizontal") > 0 || Input.GetKeyDown(KeyCode.D)) //Right direction
             {
-                selectPosition += Vector2.right;
+                selectPosition += Vector3.right;
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Horizontal") < 0) // left
+            else if (Input.GetAxis("Horizontal") < 0 || Input.GetKeyDown(KeyCode.A)) // left
             {
-                selectPosition += Vector2.left;
+                selectPosition += Vector3.left;
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Vertical") > 0) //up
+            else if (Input.GetAxis("Vertical") > 0 || Input.GetKeyDown(KeyCode.W)) //up
             {
-                selectPosition += Vector2.up;
+                selectPosition += Vector3.forward;
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Vertical") < 0) //down
+            else if (Input.GetAxis("Vertical") < 0 || Input.GetKeyDown(KeyCode.S)) //down
             {
-                selectPosition += Vector2.down;
+                selectPosition += Vector3.back;
                 releasedInput = false;
             }
         }
@@ -105,7 +105,8 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < mapSize.y; j++)
             {
                 tiles[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform);
-                tiles[i, j].transform.Translate(new Vector2(i, j));
+                tiles[i, j].transform.Translate(new Vector3(i, 0,j));
+                tiles[i, j].transform.Rotate(Vector3.right * 90);
                 tiles[i, j].name = "Tile (" + i + "," + j + ")";
             }
         }
