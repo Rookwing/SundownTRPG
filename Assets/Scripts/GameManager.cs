@@ -288,14 +288,44 @@ public class GameManager : MonoBehaviour
         tiles[x, y].LinkObject(mapObject);
     }
 
-    public void SpawnMapObjectAtSelection()
+    public MapObject SpawnMapObjectAtSelection(MapObject.ObjectType type)
     {
         MapObject mapObject;
         mapObject = Instantiate(mapObjectPrefab).GetComponent<MapObject>();
         mapObject.transform.position = selectPosition;
-        mapObject.MapPosition((int)selectPosition.x, (int)selectPosition.y);
+        mapObject.Initialize(MapObject.ObjectType.Building, (int)selectPosition.x, (int)selectPosition.z);
         LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
-        //return mapObject;
+        return mapObject;
+    }
+
+    public void SpawnMapObjectAtSelectionButton(string type) //yay long method names
+    {
+        MapObject mapObject;
+        if (tiles[(int)selectPosition.x, (int)selectPosition.z].GetLinkedObject() != null)
+        {
+            Debug.Log("A MapObject already exists at that location.");
+        }
+        else
+        {
+            mapObject = Instantiate(mapObjectPrefab).GetComponent<MapObject>();
+            mapObject.transform.position = selectPosition;
+
+            if (type == "unit")
+            {
+                mapObject.Initialize(MapObject.ObjectType.Unit, (int)selectPosition.x, (int)selectPosition.z);
+            }
+            else if (type == "building")
+            {
+                mapObject.Initialize(MapObject.ObjectType.Building, (int)selectPosition.x, (int)selectPosition.z);
+
+            }
+            else
+            {
+                mapObject.Initialize(MapObject.ObjectType.Environment, (int)selectPosition.x, (int)selectPosition.z);
+
+            }
+            LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
+        }
     }
     #endregion
 }

@@ -18,11 +18,6 @@ public class FloorTile : MonoBehaviour
         Mountain,
         River
     }
-
-    private void Start()
-    {
-    }
-
     public void Initialize(FloorType floorType)
     {
         sr = gameObject.GetComponent<SpriteRenderer>();

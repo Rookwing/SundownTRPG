@@ -12,25 +12,27 @@ Description:
 
 ===================================*/
 
-public class Unit : MonoBehaviour 
+    [RequireComponent(typeof(MapObject))]
+public class Unit : MonoBehaviour
 {
-	#region Public Variables
-	
-	#endregion
-	
-	#region Private Variables
-	
-	#endregion
-	
-	#region Enumerations
-	
-	#endregion
 
-	#region Unity Methods
-	
-	#endregion
-	
-	#region Custom Methods
-	
-	#endregion
+    #region Public Variables
+    public int speed = 2;
+    #endregion
+
+    #region Private Variables
+
+    #endregion
+
+    #region Enumerations
+
+    #endregion
+
+    #region Unity Methods
+
+    #endregion
+
+    #region Custom Methods
+
+    #endregion
 }
