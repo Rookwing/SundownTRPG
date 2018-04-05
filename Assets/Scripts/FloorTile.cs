@@ -72,6 +72,11 @@ public class FloorTile : MonoBehaviour
         return traversable;
     }
 
+    public FloorType GetFloorType()
+    {
+        return type;
+    }
+
     public override string ToString()
     {
         string s;

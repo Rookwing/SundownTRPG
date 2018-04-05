@@ -12,7 +12,7 @@ Description:
 
 ===================================*/
 
-public class GameManager : MonoBehaviour 
+public class GameManager : MonoBehaviour
 {
     #region Singleton
     public static GameManager _gm;
@@ -52,18 +52,18 @@ public class GameManager : MonoBehaviour
         tiles = new FloorTile[(int)mapSize.x, (int)mapSize.y];
 
         GenerateMap();
-        mCamera.transform.position = new Vector3(mapSize.x *0.5f, mapSize.y*0.5f, 0);
+        mCamera.transform.position = new Vector3(mapSize.x * 0.5f, mapSize.y * 0.5f, 0);
         selectPosition = new Vector3(mapSize.x * 0.5f, 0, mapSize.y * 0.5f);
     }
 
     private void Update()
     {
-        if(Time.timeScale != 0) //ANYTHING IN THIS BLOCK ADHERES TO PAUSING
+        if (Time.timeScale != 0) //ANYTHING IN THIS BLOCK ADHERES TO PAUSING
         {
             GetInput();
 
         }                       //END OF PAUSING BLOCK
-        
+
     }
     #endregion
 
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
             {
                 FloorTile tile = tiles[Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z)];
                 //selecting/interacting with menus
-                    Debug.Log("Selected: " + tile.ToString());
+                Debug.Log("Selected: " + tile.ToString());
             }
         }
         else
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
         }
 
         MoveCamera();
-        
+
     }
 
     private void GenerateMap()
@@ -137,18 +137,127 @@ public class GameManager : MonoBehaviour
             {
                 tiles[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform).GetComponent<FloorTile>();
 
-                tiles[i, j].transform.Translate(new Vector3(i, 0,j));
+                tiles[i, j].transform.Translate(new Vector3(i, 0, j));
                 tiles[i, j].transform.Rotate(Vector3.right * 90);
                 tiles[i, j].name = "Tile (" + i + "," + j + ")";
 
-                tiles[i, j].Initialize((FloorTile.FloorType)Random.Range(0,4));
+                tiles[i, j].Initialize((FloorTile.FloorType)Random.Range(0, 5));
+            }
+        }
+        //second pass
+        for (int i = 0; i < mapSize.x; i++)
+        {
+            for (int j = 0; j < mapSize.y; j++)
+            {
+                #region Removing Isolated Rivers
+                if (tiles[i, j].GetFloorType() == FloorTile.FloorType.River)
+                {
+                    bool isIsolated = false;
+                    
+                    if (i < mapSize.x-1 && i > 0)
+                    {
+                        if(j < mapSize.y-1 && j > 0)
+                        {
+
+                            if (tiles[i + 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i - 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j+1].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j-1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                        else if (j == mapSize.y-1)
+                        {
+                            if (tiles[i + 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i - 1, j].GetFloorType() != FloorTile.FloorType.River && 
+                                tiles[i, j - 1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                        else if (j == 0)
+                        {
+                            if (tiles[i + 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i - 1, j].GetFloorType() != FloorTile.FloorType.River && 
+                                tiles[i, j + 1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                    }
+                    else if (i == 0)
+                    {
+                        if (j < mapSize.y-1 && j > 0)
+                        {
+
+                            if (tiles[i + 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j + 1].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j - 1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                        else if (j == mapSize.y-1)
+                        {
+                            if (tiles[i + 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j - 1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                        else if (j == 0)
+                        {
+                            if (tiles[i + 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j + 1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                    }
+                    else if (i == mapSize.x-1)
+                    {
+                        if (j < mapSize.y-1 && j > 0)
+                        {
+
+                            if (tiles[i - 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j + 1].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j - 1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                        else if (j == mapSize.y-1)
+                        {
+                            if (tiles[i - 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j - 1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                        else if (j == 0)
+                        {
+                            if (tiles[i - 1, j].GetFloorType() != FloorTile.FloorType.River &&
+                                tiles[i, j + 1].GetFloorType() != FloorTile.FloorType.River)
+                            {
+                                isIsolated = true;
+                            }
+                        }
+                    }
+                    
+                    if(isIsolated)
+                    {
+                        tiles[i, j].Initialize((FloorTile.FloorType)Random.Range(0, 4));
+                    }
+                }
+                #endregion
             }
         }
     }
 
     private void MoveCamera()
     {
-        if(selectionOffset.x < -3)
+        if (selectionOffset.x < -3)
         {
             mCamera.transform.position += Vector3.left;
             selectionOffset.x = -3;
