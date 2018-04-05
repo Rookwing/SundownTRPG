@@ -23,9 +23,11 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Public Variables
+    public GameObject mapObjectPrefab;
     public GameObject groundGroup;
     public SelectionSquare selectionSquare;
     public Camera mCamera;
+    [HideInInspector]
     public Vector3 selectPosition = Vector2.zero;
     #endregion
 
@@ -34,7 +36,8 @@ public class GameManager : MonoBehaviour
     private GameObject baseFloorPrefab;
     [SerializeField]
     private Vector2 mapSize;
-    private GameObject[,] tiles;
+    private Vector2 selectionOffset;
+    private FloorTile[,] tiles;
     private bool releasedInput = true;
     #endregion
 
@@ -46,9 +49,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         mCamera = Camera.main;
-        tiles = new GameObject[(int)mapSize.x, (int)mapSize.y];
+        tiles = new FloorTile[(int)mapSize.x, (int)mapSize.y];
 
         GenerateMap();
+        mCamera.transform.position = new Vector3(mapSize.x *0.5f, mapSize.y*0.5f, 0);
+        selectPosition = new Vector3(mapSize.x * 0.5f, 0, mapSize.y * 0.5f);
     }
 
     private void Update()
@@ -68,25 +73,48 @@ public class GameManager : MonoBehaviour
 
         if (releasedInput)
         {
-            if (Input.GetAxis("Horizontal") > 0 || Input.GetKeyDown(KeyCode.D)) //Right direction
+            if (Input.GetAxis("Horizontal") > 0) //Right direction
             {
-                selectPosition += Vector3.right;
+                if (selectPosition.x < mapSize.x - 1)
+                {
+                    selectPosition += Vector3.right;
+                    selectionOffset += Vector2.right;
+                }
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Horizontal") < 0 || Input.GetKeyDown(KeyCode.A)) // left
+            else if (Input.GetAxis("Horizontal") < 0) // left
             {
-                selectPosition += Vector3.left;
+                if (selectPosition.x > 0)
+                {
+                    selectPosition += Vector3.left;
+                    selectionOffset += Vector2.left;
+                }
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Vertical") > 0 || Input.GetKeyDown(KeyCode.W)) //up
+            else if (Input.GetAxis("Vertical") > 0) //up
             {
-                selectPosition += Vector3.forward;
+                if (selectPosition.z < mapSize.y - 1)
+                {
+                    selectPosition += Vector3.forward;
+                    selectionOffset += Vector2.up;
+                }
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Vertical") < 0 || Input.GetKeyDown(KeyCode.S)) //down
+            else if (Input.GetAxis("Vertical") < 0) //down
             {
-                selectPosition += Vector3.back;
+                if (selectPosition.z > 0)
+                {
+                    selectPosition += Vector3.back;
+                    selectionOffset += Vector2.down;
+                }
                 releasedInput = false;
+            }
+
+            if (Input.GetButtonDown("Submit"))
+            {
+                FloorTile tile = tiles[Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z)];
+                //selecting/interacting with menus
+                    Debug.Log("Selected: " + tile.ToString());
             }
         }
         else
@@ -96,6 +124,9 @@ public class GameManager : MonoBehaviour
                 releasedInput = true;
             }
         }
+
+        MoveCamera();
+        
     }
 
     private void GenerateMap()
@@ -104,12 +135,58 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < mapSize.y; j++)
             {
-                tiles[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform);
+                tiles[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform).GetComponent<FloorTile>();
+
                 tiles[i, j].transform.Translate(new Vector3(i, 0,j));
                 tiles[i, j].transform.Rotate(Vector3.right * 90);
                 tiles[i, j].name = "Tile (" + i + "," + j + ")";
+
+                tiles[i, j].Initialize((FloorTile.FloorType)Random.Range(0,4));
             }
         }
+    }
+
+    private void MoveCamera()
+    {
+        if(selectionOffset.x < -3)
+        {
+            mCamera.transform.position += Vector3.left;
+            selectionOffset.x = -3;
+        }
+        else if (selectionOffset.x > 3)
+        {
+            mCamera.transform.position += Vector3.right;
+            selectionOffset.x = 3;
+
+        }
+
+        if (selectionOffset.y < -3)
+        {
+            mCamera.transform.position += Vector3.back;
+            selectionOffset.y = -3;
+
+        }
+        else if (selectionOffset.y > 3)
+        {
+            mCamera.transform.position += Vector3.forward;
+            selectionOffset.y = 3;
+
+        }
+    }
+
+    public void LinkToMap(int x, int y, MapObject mapObject)
+    {
+        tiles[x, y].LinkObject(mapObject);
+    }
+
+    public void SpawnMapObjectAtSelection()
+    {
+        MapObject mapObject;
+        mapObject = Instantiate(mapObjectPrefab).GetComponent<MapObject>();
+        mapObject.transform.position = selectPosition;
+        mapObject.MapPosition((int)selectPosition.x, (int)selectPosition.y);
+        LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
+        //return mapObject;
     }
     #endregion
 }
