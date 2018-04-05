@@ -181,7 +181,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1437881638552342}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 4.5, y: 9, z: 4.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4740343519036324}
@@ -310,6 +310,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20067e1f0f5f3c741ad2e02dd009461c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapObjectPrefab: {fileID: 1568197643915552, guid: 2a38983f47f674bbab0565e060369023,
+    type: 2}
   groundGroup: {fileID: 0}
   selectionSquare: {fileID: 114202844308577976}
   mCamera: {fileID: 20599223728899212}
@@ -588,7 +590,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1154227787691398}
   m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000064373016}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224066544561996864}
@@ -600,7 +602,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -607.5, y: -607.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 135.58, y: 135.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224586935545543002

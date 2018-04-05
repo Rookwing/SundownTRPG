@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Public Variables
+    public GameObject mapObjectPrefab;
     public GameObject groundGroup;
     public SelectionSquare selectionSquare;
     public Camera mCamera;
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Vector2 mapSize;
     private Vector2 selectionOffset;
-    private GameObject[,] tiles;
+    private FloorTile[,] tiles;
     private bool releasedInput = true;
     #endregion
 
@@ -48,7 +49,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         mCamera = Camera.main;
-        tiles = new GameObject[(int)mapSize.x, (int)mapSize.y];
+        tiles = new FloorTile[(int)mapSize.x, (int)mapSize.y];
 
         GenerateMap();
         mCamera.transform.position = new Vector3(mapSize.x *0.5f, mapSize.y*0.5f, 0);
@@ -111,8 +112,20 @@ public class GameManager : MonoBehaviour
 
             if (Input.GetButtonDown("Submit"))
             {
+                FloorTile tile = tiles[Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z)];
                 //selecting/interacting with menus
-                Debug.Log("Selected: " + tiles[Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z)].name);
+                if (tile.GetLinkedObject() != null)
+                {
+                    Debug.Log("Selected: " + tile.name
+                        + "\nLinked Object: " + tile.GetLinkedObject().name
+                        );
+                }
+                else
+                {
+                    Debug.Log("Selected: " + tile.name
+                        + "\nNo linked objects"
+                        );
+                }
             }
         }
         else
@@ -133,7 +146,7 @@ public class GameManager : MonoBehaviour
         {
             for (int j = 0; j < mapSize.y; j++)
             {
-                tiles[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform);
+                tiles[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform).GetComponent<FloorTile>();
                 tiles[i, j].transform.Translate(new Vector3(i, 0,j));
                 tiles[i, j].transform.Rotate(Vector3.right * 90);
                 tiles[i, j].name = "Tile (" + i + "," + j + ")";
@@ -167,6 +180,21 @@ public class GameManager : MonoBehaviour
             selectionOffset.y = 3;
 
         }
+    }
+
+    public void LinkToMap(int x, int y, MapObject mapObject)
+    {
+        tiles[x, y].LinkObject(mapObject);
+    }
+
+    public void SpawnMapObjectAtSelection()
+    {
+        MapObject mapObject;
+        mapObject = Instantiate(mapObjectPrefab).GetComponent<MapObject>();
+        mapObject.transform.position = selectPosition;
+        mapObject.MapPosition((int)selectPosition.x, (int)selectPosition.y);
+        LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
+        //return mapObject;
     }
     #endregion
 }

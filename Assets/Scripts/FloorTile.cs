@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class FloorTile : MonoBehaviour {
 
-    //need typing for sprite selection
-
-    //need var to ref mapObject on this position
-
+    MapObject linkedObject = null;
     //
+    private enum FloorType
+    {
+        Grass,
+        Dirt,
+        Forest,
+        Mountain,
+        River
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -19,4 +24,14 @@ public class FloorTile : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public MapObject GetLinkedObject()
+    {
+        return linkedObject;
+    }
+
+    public void LinkObject(MapObject mapObject)
+    {
+        linkedObject = mapObject;
+    }
 }
