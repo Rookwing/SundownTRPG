@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     private GameObject baseFloorPrefab;
     [SerializeField]
     private Vector2 mapSize;
+    private Vector2 selectionOffset;
     private GameObject[,] tiles;
     private bool releasedInput = true;
     #endregion
@@ -73,26 +74,42 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetAxis("Horizontal") > 0) //Right direction
             {
-                selectPosition += Vector3.right;
+                if (selectPosition.x < mapSize.x - 1)
+                {
+                    selectPosition += Vector3.right;
+                    selectionOffset += Vector2.right;
+                }
                 releasedInput = false;
             }
             else if (Input.GetAxis("Horizontal") < 0) // left
             {
-                selectPosition += Vector3.left;
+                if (selectPosition.x > 0)
+                {
+                    selectPosition += Vector3.left;
+                    selectionOffset += Vector2.left;
+                }
                 releasedInput = false;
             }
             else if (Input.GetAxis("Vertical") > 0) //up
             {
-                selectPosition += Vector3.forward;
+                if (selectPosition.z < mapSize.y - 1)
+                {
+                    selectPosition += Vector3.forward;
+                    selectionOffset += Vector2.up;
+                }
                 releasedInput = false;
             }
             else if (Input.GetAxis("Vertical") < 0) //down
             {
-                selectPosition += Vector3.back;
+                if (selectPosition.z > 0)
+                {
+                    selectPosition += Vector3.back;
+                    selectionOffset += Vector2.down;
+                }
                 releasedInput = false;
             }
 
-            if(Input.GetButtonDown("Submit"))
+            if (Input.GetButtonDown("Submit"))
             {
                 //selecting/interacting with menus
                 Debug.Log("Selected: " + tiles[Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z)].name);
@@ -105,6 +122,9 @@ public class GameManager : MonoBehaviour
                 releasedInput = true;
             }
         }
+
+        MoveCamera();
+
     }
 
     private void GenerateMap()
@@ -118,6 +138,34 @@ public class GameManager : MonoBehaviour
                 tiles[i, j].transform.Rotate(Vector3.right * 90);
                 tiles[i, j].name = "Tile (" + i + "," + j + ")";
             }
+        }
+    }
+
+    private void MoveCamera()
+    {
+        if(selectionOffset.x < -3)
+        {
+            mCamera.transform.position += Vector3.left;
+            selectionOffset.x = -3;
+        }
+        else if (selectionOffset.x > 3)
+        {
+            mCamera.transform.position += Vector3.right;
+            selectionOffset.x = 3;
+
+        }
+
+        if (selectionOffset.y < -3)
+        {
+            mCamera.transform.position += Vector3.back;
+            selectionOffset.y = -3;
+
+        }
+        else if (selectionOffset.y > 3)
+        {
+            mCamera.transform.position += Vector3.forward;
+            selectionOffset.y = 3;
+
         }
     }
     #endregion
