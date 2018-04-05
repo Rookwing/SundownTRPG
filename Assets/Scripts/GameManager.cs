@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public GameObject groundGroup;
     public SelectionSquare selectionSquare;
     public Camera mCamera;
+    [HideInInspector]
     public Vector3 selectPosition = Vector2.zero;
     #endregion
 
@@ -49,6 +50,8 @@ public class GameManager : MonoBehaviour
         tiles = new GameObject[(int)mapSize.x, (int)mapSize.y];
 
         GenerateMap();
+        mCamera.transform.position = new Vector3(mapSize.x *0.5f, mapSize.y*0.5f, 0);
+        selectPosition = new Vector3(mapSize.x * 0.5f, 0, mapSize.y * 0.5f);
     }
 
     private void Update()
@@ -68,25 +71,31 @@ public class GameManager : MonoBehaviour
 
         if (releasedInput)
         {
-            if (Input.GetAxis("Horizontal") > 0 || Input.GetKeyDown(KeyCode.D)) //Right direction
+            if (Input.GetAxis("Horizontal") > 0) //Right direction
             {
                 selectPosition += Vector3.right;
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Horizontal") < 0 || Input.GetKeyDown(KeyCode.A)) // left
+            else if (Input.GetAxis("Horizontal") < 0) // left
             {
                 selectPosition += Vector3.left;
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Vertical") > 0 || Input.GetKeyDown(KeyCode.W)) //up
+            else if (Input.GetAxis("Vertical") > 0) //up
             {
                 selectPosition += Vector3.forward;
                 releasedInput = false;
             }
-            else if (Input.GetAxis("Vertical") < 0 || Input.GetKeyDown(KeyCode.S)) //down
+            else if (Input.GetAxis("Vertical") < 0) //down
             {
                 selectPosition += Vector3.back;
                 releasedInput = false;
+            }
+
+            if(Input.GetButtonDown("Submit"))
+            {
+                //selecting/interacting with menus
+                Debug.Log("Selected: " + tiles[Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z)].name);
             }
         }
         else
