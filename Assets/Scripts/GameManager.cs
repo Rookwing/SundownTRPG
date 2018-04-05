@@ -114,18 +114,7 @@ public class GameManager : MonoBehaviour
             {
                 FloorTile tile = tiles[Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z)];
                 //selecting/interacting with menus
-                if (tile.GetLinkedObject() != null)
-                {
-                    Debug.Log("Selected: " + tile.name
-                        + "\nLinked Object: " + tile.GetLinkedObject().name
-                        );
-                }
-                else
-                {
-                    Debug.Log("Selected: " + tile.name
-                        + "\nNo linked objects"
-                        );
-                }
+                    Debug.Log("Selected: " + tile.ToString());
             }
         }
         else
@@ -137,7 +126,7 @@ public class GameManager : MonoBehaviour
         }
 
         MoveCamera();
-
+        
     }
 
     private void GenerateMap()
@@ -147,9 +136,12 @@ public class GameManager : MonoBehaviour
             for (int j = 0; j < mapSize.y; j++)
             {
                 tiles[i, j] = Instantiate(baseFloorPrefab, groundGroup.transform).GetComponent<FloorTile>();
+
                 tiles[i, j].transform.Translate(new Vector3(i, 0,j));
                 tiles[i, j].transform.Rotate(Vector3.right * 90);
                 tiles[i, j].name = "Tile (" + i + "," + j + ")";
+
+                tiles[i, j].Initialize((FloorTile.FloorType)Random.Range(0,4));
             }
         }
     }

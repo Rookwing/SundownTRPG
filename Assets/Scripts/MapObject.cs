@@ -28,4 +28,11 @@ public class MapObject : MonoBehaviour
         mapPosition.x = x;
         mapPosition.y = y;
     }
+
+    public override string ToString()
+    {
+        string s;
+        s = gameObject.name; //when objects have types put it here for debugging.
+        return s;
+    }
 }
