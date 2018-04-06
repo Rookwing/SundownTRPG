@@ -10,6 +10,9 @@ public class FloorTile : MonoBehaviour
     private FloorType type;
     private SpriteRenderer sr;
 
+    public Sprite grassTexture;
+    public Sprite rockTexture;
+    public Sprite dirtTexture;
     public enum FloorType
     {
         Grass,
@@ -21,27 +24,28 @@ public class FloorTile : MonoBehaviour
     public void Initialize(FloorType floorType)
     {
         sr = gameObject.GetComponent<SpriteRenderer>();
+        sr.color = Color.white;
 
         type = floorType;
         if (type == FloorType.Grass)
         {
             traversable = true;
-            sr.color = Color.green;
+            sr.sprite = grassTexture;
         }
         else if (type == FloorType.Dirt)
         {
             traversable = true;
-            sr.color = Color.grey;
+            sr.sprite = dirtTexture;
         }
         else if (type == FloorType.Forest)
         {
             traversable = true;
-            sr.color = Color.green;
+            sr.sprite = grassTexture;
         }
         else if (type == FloorType.Mountain)
         {
             traversable = false;
-            sr.color = Color.red;
+            sr.sprite = rockTexture;
         }
         else if (type == FloorType.River)
         {

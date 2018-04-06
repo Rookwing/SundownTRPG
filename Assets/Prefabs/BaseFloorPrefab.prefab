@@ -52,6 +52,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0aa81c6a6bf3348e8966d0d936784154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grassTexture: {fileID: 21300000, guid: fbdea82c481636c45b6daa5daa02e1e1, type: 3}
+  rockTexture: {fileID: 21300000, guid: cf580fc6a5acd59479d7095715e6190c, type: 3}
+  dirtTexture: {fileID: 21300000, guid: 841fcd1b1be1e674589f1f968af69740, type: 3}
 --- !u!212 &212905651002468590
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -66,7 +69,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d4ec0f67a0fa3e94887a4247c32cf8ec, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,15 +86,15 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -220405359
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: cc9774f1a9e7f594e82706f7083f3821, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

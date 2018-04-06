@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*===================================
 Project:	SundownTRPG	
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
     public Camera mCamera;
     [HideInInspector]
     public Vector3 selectPosition = Vector2.zero;
+    public Text selectionText;
     #endregion
 
     #region Private Variables
@@ -36,9 +38,11 @@ public class GameManager : MonoBehaviour
     private GameObject baseFloorPrefab;
     [SerializeField]
     private Vector2 mapSize;
+    private Color[,] terrainMap;
     private Vector2 selectionOffset;
     private FloorTile[,] tiles;
     private bool releasedInput = true;
+    
     #endregion
 
     #region Enumerations
@@ -52,8 +56,8 @@ public class GameManager : MonoBehaviour
         tiles = new FloorTile[(int)mapSize.x, (int)mapSize.y];
 
         GenerateMap();
-        mCamera.transform.position = new Vector3(mapSize.x * 0.5f, mapSize.y * 0.5f, 0);
-        selectPosition = new Vector3(mapSize.x * 0.5f, 0, mapSize.y * 0.5f);
+        mCamera.transform.position = new Vector3(mapSize.x * 0.5f, mapSize.y, -mapSize.y *0.5f);
+        selectPosition = new Vector3(mapSize.x * 0.5f, 0.01f, mapSize.y * 0.5f);
     }
 
     private void Update()
@@ -119,6 +123,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            FloorTile tile = tiles[Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z)];
+            selectionText.text = tile.ToString();
+
             if ((Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0))
             {
                 releasedInput = true;

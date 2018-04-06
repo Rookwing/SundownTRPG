@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MapObject : MonoBehaviour
 {
+    public SpriteRenderer spriteObject;
     private Vector2 mapPosition;
     private ObjectType type;
 

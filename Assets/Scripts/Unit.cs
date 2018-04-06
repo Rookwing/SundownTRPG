@@ -18,10 +18,12 @@ public class Unit : MonoBehaviour
 
     #region Public Variables
     public int speed = 2;
+    public Sprite tempUnitSprite;
     #endregion
 
     #region Private Variables
-
+    private MapObject mapObject; //parent holding map data
+    private FloorTile targetTile;
     #endregion
 
     #region Enumerations
@@ -29,7 +31,10 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region Unity Methods
-
+    private void Start()
+    {
+        mapObject = GetComponent<MapObject>();
+    }
     #endregion
 
     #region Custom Methods
