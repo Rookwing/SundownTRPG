@@ -4,23 +4,31 @@ using UnityEngine;
 
 public class MapObject : MonoBehaviour
 {
+    public SpriteRenderer spriteObject;
     private Vector2 mapPosition;
+    private ObjectType type;
 
-	// Use this for initialization
-	void Start () 
+    public enum ObjectType
     {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () 
-    {
-		
-	}
+        Unit,
+        Building,
+        Environment
+    }
 
     public Vector2 MapPosition()
     {
         return mapPosition;
+    }
+
+    public void Initialize(ObjectType t, int mapX, int mapY)
+    {
+        type = t;
+        MapPosition(mapX, mapY);
+    }
+    public void Initialize(ObjectType t)
+    {
+        type = t;
+        MapPosition(0, 0);
     }
 
     public void MapPosition(int x, int y)
@@ -32,7 +40,7 @@ public class MapObject : MonoBehaviour
     public override string ToString()
     {
         string s;
-        s = gameObject.name; //when objects have types put it here for debugging.
+        s = gameObject.name + ", a "+type+ " object"; //when objects have types put it here for debugging.
         return s;
     }
 }

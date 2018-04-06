@@ -41,14 +41,11 @@ TagManager:
   - name: BOTTOM
     uniqueID: 1435985763
     locked: 0
-  - name: Default
-    uniqueID: 0
-    locked: 0
   - name: Ground
     uniqueID: 4074561937
     locked: 0
-  - name: Units/Environment
-    uniqueID: 3016579009
+  - name: Default
+    uniqueID: 0
     locked: 0
   - name: Effects
     uniqueID: 2105969131

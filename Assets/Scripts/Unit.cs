@@ -12,25 +12,32 @@ Description:
 
 ===================================*/
 
-public class Unit : MonoBehaviour 
+    [RequireComponent(typeof(MapObject))]
+public class Unit : MonoBehaviour
 {
-	#region Public Variables
-	
-	#endregion
-	
-	#region Private Variables
-	
-	#endregion
-	
-	#region Enumerations
-	
-	#endregion
 
-	#region Unity Methods
-	
-	#endregion
-	
-	#region Custom Methods
-	
-	#endregion
+    #region Public Variables
+    public int speed = 2;
+    public Sprite tempUnitSprite;
+    #endregion
+
+    #region Private Variables
+    private MapObject mapObject; //parent holding map data
+    private FloorTile targetTile;
+    #endregion
+
+    #region Enumerations
+
+    #endregion
+
+    #region Unity Methods
+    private void Start()
+    {
+        mapObject = GetComponent<MapObject>();
+    }
+    #endregion
+
+    #region Custom Methods
+
+    #endregion
 }
