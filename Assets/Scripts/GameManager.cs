@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public GameObject mapObjectPrefab;
     public GameObject unitPrefab;
     public GameObject groundGroup;
+    public GameObject buildingPrefab;
     public SelectionSquare selectionSquare;
     public Camera mCamera;
     [HideInInspector]
@@ -328,6 +329,12 @@ public class GameManager : MonoBehaviour
             }
             else if (type == "building")
             {
+
+                mapObject = Instantiate(buildingPrefab).GetComponent<MapObject>();
+
+                mapObject.Initialize(MapObject.ObjectType.Building, (int)selectPosition.x, (int)selectPosition.z);
+                mapObject.transform.position = selectPosition;
+                LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
                 //mapObject.Initialize(MapObject.ObjectType.Building, (int)selectPosition.x, (int)selectPosition.z);
 
             }

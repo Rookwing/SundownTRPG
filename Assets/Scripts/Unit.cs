@@ -19,25 +19,51 @@ public class Unit : MonoBehaviour
     #region Public Variables
     public int speed = 2;
     public Sprite tempUnitSprite;
+    public Sprite heavy;
+    public Sprite foot;
     #endregion
 
     #region Private Variables
     private MapObject mapObject; //parent holding map data
     private FloorTile targetTile;
+    private ObjectType type;
+    private SpriteRenderer spr;
     #endregion
 
     #region Enumerations
-
+    public enum ObjectType
+    {
+        heavyT,
+        footT
+    }
     #endregion
 
     #region Unity Methods
-    private void Start()
+    private void Awake()
     {
         mapObject = GetComponent<MapObject>();
+        spr = GetComponent<SpriteRenderer>();
     }
     #endregion
 
     #region Custom Methods
 
+    // Testing spawing types
+    public void Initialize(ObjectType t)
+    {
+        type = t;
+        spr.sprite = type == ObjectType.heavyT ? heavy : foot;
+
+        if (type.Equals(ObjectType.heavyT))
+            HeavyT();
+        else
+            FootT();
+    }
+
+    // Sets Stats for each type
+    private void HeavyT()
+    {}
+    private void FootT()
+    {}
     #endregion
 }

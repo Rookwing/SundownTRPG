@@ -873,6 +873,8 @@ MonoBehaviour:
     type: 2}
   unitPrefab: {fileID: 1258873624682854, guid: b370fc4bbf7d045979efb7f7cab808f5, type: 2}
   groundGroup: {fileID: 0}
+  buildingPrefab: {fileID: 1260255706516364, guid: bff7ee248c85a4422ba029c517c9dd0e,
+    type: 2}
   selectionSquare: {fileID: 114202844308577976}
   mCamera: {fileID: 20599223728899212}
   selectPosition: {x: 0, y: 0, z: 0}
