@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     #region Public Variables
     public GameObject mapObjectPrefab;
+    public GameObject unitPrefab;
     public GameObject groundGroup;
     public SelectionSquare selectionSquare;
     public Camera mCamera;
@@ -314,24 +315,27 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            mapObject = Instantiate(mapObjectPrefab).GetComponent<MapObject>();
-            mapObject.transform.position = selectPosition;
+            //mapObject = Instantiate(mapObjectPrefab).GetComponent<MapObject>();
+            //mapObject.transform.position = selectPosition;
 
             if (type == "unit")
             {
+                mapObject = Instantiate(unitPrefab).GetComponent<MapObject>();
+
                 mapObject.Initialize(MapObject.ObjectType.Unit, (int)selectPosition.x, (int)selectPosition.z);
+                mapObject.transform.position = selectPosition;
+                LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
             }
             else if (type == "building")
             {
-                mapObject.Initialize(MapObject.ObjectType.Building, (int)selectPosition.x, (int)selectPosition.z);
+                //mapObject.Initialize(MapObject.ObjectType.Building, (int)selectPosition.x, (int)selectPosition.z);
 
             }
             else
             {
-                mapObject.Initialize(MapObject.ObjectType.Environment, (int)selectPosition.x, (int)selectPosition.z);
+                //mapObject.Initialize(MapObject.ObjectType.Environment, (int)selectPosition.x, (int)selectPosition.z);
 
             }
-            LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
         }
     }
     #endregion

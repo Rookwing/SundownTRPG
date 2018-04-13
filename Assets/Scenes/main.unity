@@ -214,31 +214,6 @@ Prefab:
       propertyPath: groundGroup
       value: 
       objectReference: {fileID: 1370685044}
-    - target: {fileID: 114575196327787462, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64,
-        type: 2}
-      propertyPath: m_FontData.m_RichText
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114575196327787462, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64,
-        type: 2}
-      propertyPath: m_FontData.m_FontSize
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114575196327787462, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64,
-        type: 2}
-      propertyPath: m_FontData.m_AlignByGeometry
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114575196327787462, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64,
-        type: 2}
-      propertyPath: m_FontData.m_BestFit
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114575196327787462, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64,
-        type: 2}
-      propertyPath: m_FontData.m_VerticalOverflow
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8f8ec3cb48ab7c04b9f9689f64cfed64, type: 2}
   m_IsPrefabParent: 0
