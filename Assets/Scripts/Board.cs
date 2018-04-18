@@ -4,14 +4,21 @@ using UnityEngine;
 
 public class Board : MonoBehaviour {
 
+    public static Board _board;
+
     public Transform player;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
+    public int gridSizeX, gridSizeY;
     public float nodeRadius;
     Node[,] grid;
 
-    float nodeDiameter;
-    int gridSizeX, gridSizeY;
+    float nodeDiameter;   
+
+    private void Awake()
+    {
+        _board = this.GetComponent<Board>();
+    }
 
     private void Start()
     {
@@ -19,14 +26,10 @@ public class Board : MonoBehaviour {
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y/nodeDiameter);
         CreateGrid();
-        Debug.Log("Grid X: " + gridSizeX);
-        Debug.Log("Grid Y: " + gridSizeY);
-
     }
 
     void CreateGrid()
     {
-        Debug.Log("in create grid");
         grid = new Node[gridSizeX, gridSizeY];
         Vector3 worldBtmLft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
 
@@ -35,15 +38,34 @@ public class Board : MonoBehaviour {
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Debug.Log(y);
                 Vector3 worldPoint = worldBtmLft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                Node n = new Node(walkable, worldPoint);
+                Node n = new Node(walkable, worldPoint, x, y);
                 grid[x, y] = n;
-
-                Debug.Log(n.toString());
             }
         }
+    }
+
+    public List<Node> GetNeighbors(Node node)
+    {
+        List<Node> neighbors = new List<Node>();
+
+        for (int x = -1; x <=1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == -1 && y == -1 || x == 0 && y == 0 || x == -1 && y == 1 || x ==1 && y == 1 || x ==1 && y == -1)
+                    continue;
+
+                int checkX = node.gridX + x;
+                int checkY = node.gridY + y;
+
+                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                    neighbors.Add(grid[checkX, checkY]);
+            }
+        }
+
+        return neighbors;
     }
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
@@ -58,6 +80,9 @@ public class Board : MonoBehaviour {
         return grid[x, y];
     }
 
+    public List<Node> path;
+
+
     private void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
@@ -68,8 +93,9 @@ public class Board : MonoBehaviour {
             foreach(Node n in grid)
             {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                if (playerNode == n)
-                    Gizmos.color = Color.cyan;
+                if (path != null)
+                    if (path.Contains(n))
+                        Gizmos.color = Color.black;
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }
