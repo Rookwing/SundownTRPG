@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Board : MonoBehaviour {
 
-    public static Board _board;
-
     public Transform player;
     public LayerMask unwalkableMask;
     public Vector2 gridWorldSize;
@@ -13,12 +11,7 @@ public class Board : MonoBehaviour {
     public float nodeRadius;
     Node[,] grid;
 
-    float nodeDiameter;   
-
-    private void Awake()
-    {
-        _board = this.GetComponent<Board>();
-    }
+    float nodeDiameter;       
 
     private void Start()
     {
@@ -89,7 +82,11 @@ public class Board : MonoBehaviour {
 
         if(grid !=null)
         {
-            Node playerNode = NodeFromWorldPoint(player.position);
+            if (player != null)
+            {
+                Node playerNode = NodeFromWorldPoint(player.position);
+            }
+
             foreach(Node n in grid)
             {
                 Gizmos.color = (n.walkable) ? Color.white : Color.red;

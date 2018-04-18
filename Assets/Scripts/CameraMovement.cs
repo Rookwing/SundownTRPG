@@ -11,8 +11,8 @@ public class CameraMovement : MonoBehaviour {
 
     private void Start()
     {
-        maxX = (int)(Board._board.gridWorldSize.x/2);
-        maxY = (int)(Board._board.gridWorldSize.y/2);
+        maxX = (int)(GameManager._gm._board.gridWorldSize.x/2);
+        maxY = (int)(GameManager._gm._board.gridWorldSize.y/2);
     }
     private void Update()
     {

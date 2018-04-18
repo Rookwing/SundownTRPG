@@ -15,6 +15,26 @@ Description:
 
 public class GameManager : MonoBehaviour
 {
+
+    public static GameManager _gm;
+    public Board _board;
+    public Pathfinding _pathing;
+
+    private void Awake()
+    {
+        _gm = this;
+    }
+
+    private void Start()
+    {
+        _board = GetComponent<Board>();
+        _pathing = GetComponent<Pathfinding>();
+    }
+
+
+
+    #region OLD
+    /*
     #region Singleton
     public static GameManager _gm;
     private void Awake()
@@ -334,5 +354,7 @@ public class GameManager : MonoBehaviour
             LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
         }
     }
+    #endregion
+    */
     #endregion
 }

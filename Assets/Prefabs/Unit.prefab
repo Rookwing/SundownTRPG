@@ -20,6 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4460982156730546}
   - component: {fileID: 212012409427025182}
+  - component: {fileID: 65944782094019836}
+  - component: {fileID: 114472800460227574}
+  - component: {fileID: 114033089947421992}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -33,13 +36,51 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1258873624682854}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -8.821269, y: 6.856946, z: 13.079374}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -1.3255, y: 10, z: -7.5768}
+  m_LocalScale: {x: 3.3852117, y: 3.3852093, z: 3.3852093}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &65944782094019836
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1258873624682854}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 0}
+  m_Center: {x: 0.08588732, y: 0.47484547, z: 0}
+--- !u!114 &114033089947421992
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1258873624682854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ef816c94ffd043b09d6d946ae9a0997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spriteObject: {fileID: 0}
+--- !u!114 &114472800460227574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1258873624682854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e4c1816dc1c1c147aa71417c351cd59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2
+  tempUnitSprite: {fileID: 21300000, guid: 724c0aaddf5ba4a1eb2790863ebebe0d, type: 3}
+  selected: 0
 --- !u!212 &212012409427025182
 SpriteRenderer:
   m_ObjectHideFlags: 1

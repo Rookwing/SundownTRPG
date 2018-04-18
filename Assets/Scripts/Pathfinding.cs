@@ -15,7 +15,7 @@ public class Pathfinding : MonoBehaviour {
 
     private void Update()
     {
-        if (unitSelected == true)
+        if (seeker != null && target != null)
             FindPath(seeker.position, target.position);
     }
 
