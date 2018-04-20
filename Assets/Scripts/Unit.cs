@@ -23,17 +23,10 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region Private Variables
-    private MapObject mapObject; //parent holding map data
+    //private MapObject mapObject; //parent holding map data
     private FloorTile targetTile;    
     #endregion
 
-    private void OnMouseDown()
-    {
-        if (GameManager._gm._pathing.seeker != null && GameManager._gm._pathing.seeker != this.transform)
-            GameManager._gm._pathing.target = this.transform;
-        else
-            GameManager._gm._pathing.seeker = this.transform;
-    }
 
     #region Enumerations
 
@@ -42,7 +35,15 @@ public class Unit : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        mapObject = GetComponent<MapObject>();
+        //mapObject = GetComponent<MapObject>();
+    }
+
+    private void OnMouseDown()
+    {
+        if (GameManager._gm._pathing.seeker != null && GameManager._gm._pathing.seeker != this.transform)
+            GameManager._gm._pathing.target = this.transform;
+        else
+            GameManager._gm._pathing.seeker = this.transform;
     }
     #endregion
 

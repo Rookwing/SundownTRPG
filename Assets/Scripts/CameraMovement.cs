@@ -11,9 +11,10 @@ public class CameraMovement : MonoBehaviour {
 
     private void Start()
     {
-        maxX = (int)(GameManager._gm._board.gridWorldSize.x/2);
-        maxY = (int)(GameManager._gm._board.gridWorldSize.y/2);
+            maxX = (int)(GameManager._gm.MapSize().x);
+            maxY = (int)(GameManager._gm.MapSize().y);
     }
+
     private void Update()
     {
         var mousePosX = Input.mousePosition.x;
@@ -30,9 +31,9 @@ public class CameraMovement : MonoBehaviour {
 
 
             if (mousePosY < scrollDist)
-                transform.Translate(Vector3.up * -scrollSpeed * Time.deltaTime);
+                transform.Translate(Vector3.back * scrollSpeed * Time.deltaTime, Space.World);
             if (mousePosY >= Screen.height - scrollDist)
-                transform.Translate(Vector3.up * scrollSpeed * Time.deltaTime);
+                transform.Translate(Vector3.forward * scrollSpeed * Time.deltaTime, Space.World);
         }
 
         if (posX > maxX)
@@ -40,8 +41,8 @@ public class CameraMovement : MonoBehaviour {
         if (posX < -maxX)
             transform.Translate(Vector3.right * .5f * Time.deltaTime);
         if (posY > maxY)
-            transform.Translate(Vector3.down * 1.5f * Time.deltaTime);
+            transform.Translate(Vector3.back * 1.5f * Time.deltaTime, Space.World);
         if (posY < -maxY)
-            transform.Translate(Vector3.up * 1.5f * Time.deltaTime);
+            transform.Translate(Vector3.forward * 1.5f * Time.deltaTime, Space.World);
     }
 }

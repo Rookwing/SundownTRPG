@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4702255854408812}
   - component: {fileID: 212905651002468590}
-  - component: {fileID: 114424112345210332}
+  - component: {fileID: 114548974685326554}
   m_Layer: 0
-  m_Name: BaseFloorPrefab
+  m_Name: BaseFloorPrefab 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114424112345210332
+--- !u!114 &114548974685326554
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}

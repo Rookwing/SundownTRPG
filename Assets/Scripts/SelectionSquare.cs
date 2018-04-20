@@ -14,8 +14,6 @@ Description:
 
 public class SelectionSquare : MonoBehaviour 
 {
-    #region OLD
-    /*
     #region Public Variables
     public GameObject TopLeftTri;
     public GameObject TopRightTri;
@@ -89,6 +87,4 @@ public class SelectionSquare : MonoBehaviour
     #region Custom Methods
 
     #endregion
-    */
-#endregion OLD
 }

@@ -1,11 +1,15 @@
 fileFormatVersion: 2
 guid: 0aa81c6a6bf3348e8966d0d936784154
-timeCreated: 1522376428
+timeCreated: 1524214961
 licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - grassTexture: {fileID: 21300000, guid: fbdea82c481636c45b6daa5daa02e1e1, type: 3}
+  - rockTexture: {fileID: 21300000, guid: cf580fc6a5acd59479d7095715e6190c, type: 3}
+  - dirtTexture: {fileID: 21300000, guid: 841fcd1b1be1e674589f1f968af69740, type: 3}
+  - riverTexture: {fileID: 21300000, guid: 0a556c589dbabf04181ea1b14a612140, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
