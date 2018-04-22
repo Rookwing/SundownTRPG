@@ -214,20 +214,10 @@ Prefab:
       propertyPath: groundGroup
       value: 
       objectReference: {fileID: 1370685044}
-    - target: {fileID: 224010801967515528, guid: 4a9b1bc1737120e4888b2f25bef5b1a3,
+    - target: {fileID: 224287475066849216, guid: 4a9b1bc1737120e4888b2f25bef5b1a3,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 14.5000305
-      objectReference: {fileID: 0}
-    - target: {fileID: 224110353396010276, guid: 4a9b1bc1737120e4888b2f25bef5b1a3,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 14.5000305
-      objectReference: {fileID: 0}
-    - target: {fileID: 224819836009335476, guid: 4a9b1bc1737120e4888b2f25bef5b1a3,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 14.5000305
+      value: -775.0002
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4a9b1bc1737120e4888b2f25bef5b1a3, type: 2}

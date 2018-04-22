@@ -971,11 +971,13 @@ MonoBehaviour:
   groundGroup: {fileID: 0}
   mCamera: {fileID: 20550615814119106}
   selectPosition: {x: 0, y: 0, z: 0}
-  mapObjectPrefab: {fileID: 1568197643915552, guid: 2a38983f47f674bbab0565e060369023,
+  selectionLocked: 0
+  mapObjectPrefab: {fileID: 1818874276634610, guid: 2a38983f47f674bbab0565e060369023,
     type: 2}
   mapSize: {x: 20, y: 20}
   selectionSquare: {fileID: 114809363728977870}
   selectionText: {fileID: 114381963574309950}
+  devPanelObj: {fileID: 1689265643618774}
 --- !u!114 &114627759907025274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1065,8 +1067,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc027bc940d9c7c43aa9054b10327343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 2
-  scrollDist: 1
+  scrollSpeed: 100
+  scrollDist: 100
   maxX: 0
   maxY: 0
 --- !u!114 &114692536870139060

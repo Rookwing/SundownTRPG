@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public Camera mCamera; //use this instead of Camera.main its more efficient.
     [HideInInspector]
     public Vector3 selectPosition = Vector2.zero; //stores the selectionSquares position so we can make it private.
+    public bool selectionLocked = false;
     #endregion
 
     #region Private Variables
@@ -36,7 +37,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Text selectionText; //can change the infobox's text with the methods below
     [SerializeField]
-    private GraphicRaycaster canvasGR;
+    private GameObject devPanelObj;
+
     #endregion
 
 
@@ -61,12 +63,31 @@ public class GameManager : MonoBehaviour
     {
         if (Time.timeScale != 0) //ANYTHING IN THIS BLOCK ADHERES TO PAUSING
         {
-            GetInput();
-
+            GetInput();//orgainzes input code
+            SelectionMenus(); //checks for if the menus should be visible.
         }                       //END OF PAUSING BLOCK
 
     }
 
+    private void SelectionMenus()
+    {
+        if(selectionLocked)
+        {
+            if(!devPanelObj.activeInHierarchy)
+            {
+                devPanelObj.SetActive(true);
+            }
+            //show menus
+        }
+        else
+        {
+            if (devPanelObj.activeInHierarchy)
+            {
+                devPanelObj.SetActive(false);
+            }
+            //hide menus
+        }
+    }
     //returns the mapsize set in the inspector. this is used to determine any and all things that constrain to the max size like the board or the map.
     public Vector2 MapSize()
     {
@@ -111,6 +132,7 @@ public class GameManager : MonoBehaviour
 
             }
             _board.LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
+            selectionLocked = false;
         }
     }
     #endregion
@@ -199,17 +221,40 @@ public class GameManager : MonoBehaviour
         #region Mouse SELECTION Movement
         Ray ray = new Ray(mCamera.ScreenToWorldPoint(Input.mousePosition), mCamera.transform.forward);
         RaycastHit hit;
-
-        if (Physics.Raycast(ray, out hit, 1 << 9))
+        if (!selectionLocked)
         {
-            selectPosition.x = hit.transform.position.x; //could be simplified by storing x and z in a method in the floortile component?
-            selectPosition.z = hit.transform.position.z;
-            UpdateInfobox(selectPosition);
+            if (Physics.Raycast(ray, out hit, 1 << 9))
+            {
+                selectPosition.x = hit.transform.position.x; //could be simplified by storing x and z in a method in the floortile component?
+                selectPosition.z = hit.transform.position.z;
+                UpdateInfobox(selectPosition);
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (Physics.Raycast(ray, out hit, 1 << 9))
+                {
+                    selectPosition.x = hit.transform.position.x; //could be simplified by storing x and z in a method in the floortile component?
+                    selectPosition.z = hit.transform.position.z;
+                    UpdateInfobox(selectPosition);
+
+                    selectionLocked = true;
+
+                }
+                //TODO: Activate selection menus
+            }
         }
-
-        if(Input.GetMouseButtonDown(0))
+        else
         {
-            //TODO: Activate selection menus
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (Physics.Raycast(ray, out hit, 1 << 9))
+                {
+                    selectionLocked = false;
+
+                }
+                //TODO: Activate selection menus
+            }
         }
         #endregion
 

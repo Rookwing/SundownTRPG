@@ -18,6 +18,9 @@ public class Board : MonoBehaviour
     private Vector3 nodecubeOffset;
     private Vector3 groundOffset;
 
+    [SerializeField]
+    private bool drawGizmos = true;
+
     private void Start()
     {
 
@@ -45,7 +48,7 @@ public class Board : MonoBehaviour
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 worldPoint = worldBtmLft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
+                Vector3 worldPoint = worldBtmLft + Vector3.right * (x * nodeDiameter) + Vector3.forward * (y * nodeDiameter);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
                 Node n = new Node(walkable, worldPoint, x, y);
                 grid[x, y] = n;
@@ -212,8 +215,8 @@ public class Board : MonoBehaviour
 
     public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
-        float percentX = (worldPosition.x + GameManager._gm.MapSize().x / 2) / GameManager._gm.MapSize().x;
-        float percentY = (worldPosition.z + GameManager._gm.MapSize().y / 2) / GameManager._gm.MapSize().y;
+        float percentX = (worldPosition.x) / GameManager._gm.MapSize().x;
+        float percentY = (worldPosition.z) / GameManager._gm.MapSize().y;
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
@@ -233,16 +236,21 @@ public class Board : MonoBehaviour
             new Vector3(
                 GameManager._gm.MapSize().x, 1, GameManager._gm.MapSize().y
                 ));
-
-        if (grid != null)
+        if (drawGizmos)
         {
-            foreach (Node n in grid)
+
+            if (grid != null)
             {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                if (path != null)
-                    if (path.Contains(n))
-                        Gizmos.color = Color.black;
-                Gizmos.DrawCube(n.worldPosition + nodecubeOffset, Vector3.one * (nodeDiameter - .1f));
+                foreach (Node n in grid)
+                {
+                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                    if (path != null)
+                        if (path.Contains(n))
+                            Gizmos.color = Color.black;
+
+                    //Gizmos.DrawCube(n.worldPosition + nodecubeOffset, Vector3.one * (nodeDiameter - .1f));
+                    Gizmos.DrawSphere(n.worldPosition, .1f);
+                }
             }
         }
     }
