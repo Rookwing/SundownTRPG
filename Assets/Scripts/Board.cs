@@ -65,7 +65,7 @@ public class Board : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector3 worldPoint = worldBtmLft + Vector3.right * (x * nodeDiameter) + Vector3.forward * (y * nodeDiameter);
-                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
+                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask)); //TODO: Check for terrain walkability, not using layers, on node generation
                 Node n = new Node(walkable, worldPoint, x, y);
                 grid[x, y] = n;
             }
