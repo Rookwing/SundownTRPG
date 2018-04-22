@@ -24,11 +24,23 @@ public class MapObject : MonoBehaviour
     {
         type = t;
         MapPosition(mapX, mapY);
+        TransformObject();
     }
     public void Initialize(ObjectType t)
     {
         type = t;
         MapPosition(0, 0);
+        TransformObject();
+    }
+
+    private void TransformObject()
+    {
+        if (type == ObjectType.Unit)
+            gameObject.AddComponent<Unit>();
+       // else if (type == ObjectType.Building)
+           // gameObject.AddComponent<Building>();
+       // else if (type == ObjectType.Environment)
+           // gameObject.AddComponent<Environment>();
     }
 
     public void MapPosition(int x, int y)

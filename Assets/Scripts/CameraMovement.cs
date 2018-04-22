@@ -25,24 +25,31 @@ public class CameraMovement : MonoBehaviour {
         if (posX < maxX && posX > -maxX && posY < maxY && posY > -maxY)
         {
             if (mousePosX < scrollDist)
-                transform.Translate(Vector3.right * -scrollSpeed * Time.deltaTime);
+            MoveCamera(Vector3.left * scrollSpeed * Time.deltaTime);
             if (mousePosX >= Screen.width - scrollDist)
-                transform.Translate(Vector3.right * scrollSpeed * Time.deltaTime);
-
+            MoveCamera(Vector3.right * scrollSpeed * Time.deltaTime);
 
             if (mousePosY < scrollDist)
-                transform.Translate(Vector3.back * scrollSpeed * Time.deltaTime, Space.World);
+            MoveCamera(Vector3.back * scrollSpeed * Time.deltaTime);
             if (mousePosY >= Screen.height - scrollDist)
-                transform.Translate(Vector3.forward * scrollSpeed * Time.deltaTime, Space.World);
+            MoveCamera(Vector3.forward * scrollSpeed * Time.deltaTime);
         }
 
         if (posX > maxX)
-            transform.Translate(Vector3.left * .5f * Time.deltaTime);
+            MoveCamera(Vector3.left * .5f * Time.deltaTime);
         if (posX < -maxX)
-            transform.Translate(Vector3.right * .5f * Time.deltaTime);
+            MoveCamera(Vector3.right * .5f * Time.deltaTime);
         if (posY > maxY)
-            transform.Translate(Vector3.back * 1.5f * Time.deltaTime, Space.World);
+            MoveCamera(Vector3.back * 1.5f * Time.deltaTime);
         if (posY < -maxY)
-            transform.Translate(Vector3.forward * 1.5f * Time.deltaTime, Space.World);
+            MoveCamera(Vector3.forward * 1.5f * Time.deltaTime);
+    }
+
+
+    //created a function to transform the camera so we can more easily tell it to from the game manager if we need to.
+    //works exactly the same as calling transform.Translate but says move camera for readability
+    public void MoveCamera(Vector3 v3)
+    {
+        transform.Translate(v3 * 1.5f * Time.deltaTime, Space.World);
     }
 }
