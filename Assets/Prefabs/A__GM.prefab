@@ -72,13 +72,14 @@ GameObject:
   - component: {fileID: 224951965129662700}
   - component: {fileID: 222588750182117160}
   - component: {fileID: 114942116612747208}
+  - component: {fileID: 114249551240827744}
   m_Layer: 5
-  m_Name: InteractionPAnel
+  m_Name: CommandPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1155165749730990
 GameObject:
   m_ObjectHideFlags: 1
@@ -688,6 +689,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 32
+--- !u!114 &114249551240827744
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1149322641313952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c147d5a81a474a4b8229d7e7673d0e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114270176853735306
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -972,12 +984,14 @@ MonoBehaviour:
   mCamera: {fileID: 20550615814119106}
   selectPosition: {x: 0, y: 0, z: 0}
   selectionLocked: 0
+  lockedObject: {fileID: 0}
   mapObjectPrefab: {fileID: 1818874276634610, guid: 2a38983f47f674bbab0565e060369023,
     type: 2}
   mapSize: {x: 20, y: 20}
   selectionSquare: {fileID: 114809363728977870}
   selectionText: {fileID: 114381963574309950}
   devPanelObj: {fileID: 1689265643618774}
+  commandPanel: {fileID: 114249551240827744}
 --- !u!114 &114627759907025274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1183,6 +1197,7 @@ MonoBehaviour:
   nodeRadius: 0.5
   baseFloorPrefab: {fileID: 1232241717606484, guid: 3421c75a912935047becea1d51b4e7cd,
     type: 2}
+  drawGizmos: 1
 --- !u!114 &114809363728977870
 MonoBehaviour:
   m_ObjectHideFlags: 1

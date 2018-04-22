@@ -20,7 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4446847745151462}
   - component: {fileID: 212619991832074344}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -37,7 +37,7 @@ GameObject:
   - component: {fileID: 4879130726926132}
   - component: {fileID: 114178799053093028}
   - component: {fileID: 212247976808324188}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MapObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

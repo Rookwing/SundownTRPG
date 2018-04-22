@@ -26,9 +26,25 @@ public class Board : MonoBehaviour
 
         tiles = new FloorTile[(int)GameManager._gm.MapSize().x, (int)GameManager._gm.MapSize().y];
     }
+
+    /// <summary>
+    /// Returns the tile at (x,y) on the grid of the map
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
     public FloorTile GetTileAt(int x, int y)
     {
         return tiles[x, y];
+    }
+    /// <summary>
+    /// Takes a Vector3, meant to take the selection square position. Uses the x for the x and the z for the y 
+    /// </summary>
+    /// <param name="v3">Selection square position</param>
+    /// <returns></returns>
+    public FloorTile GetTileAt(Vector3 v3)
+    {
+        return tiles[Mathf.FloorToInt(v3.x), Mathf.FloorToInt(v3.z)];
     }
 
     void CreateGrid()

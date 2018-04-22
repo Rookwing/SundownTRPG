@@ -36,7 +36,10 @@ public class MapObject : MonoBehaviour
     private void TransformObject()
     {
         if (type == ObjectType.Unit)
+        {
+            gameObject.name = "Unit MapObject";
             gameObject.AddComponent<Unit>();
+        }
        // else if (type == ObjectType.Building)
            // gameObject.AddComponent<Building>();
        // else if (type == ObjectType.Environment)

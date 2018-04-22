@@ -7,6 +7,7 @@ public class FloorTile : MonoBehaviour
 
     private bool traversable;
     private MapObject linkedObject = null;
+    private bool linked;
     private FloorType type;
     private SpriteRenderer sr;
 
@@ -24,9 +25,10 @@ public class FloorTile : MonoBehaviour
     }
     public void Initialize(FloorType floorType)
     {
+        linked = false;
         sr = gameObject.GetComponent<SpriteRenderer>();
         sr.color = Color.white;
-        
+
 
         type = floorType;
         if (type == FloorType.Grass)
@@ -50,9 +52,9 @@ public class FloorTile : MonoBehaviour
             sr.sprite = rockTexture;
         }
         else if (type == FloorType.River)
-        {            
+        {
             traversable = false;
-            sr.sprite = riverTexture;            
+            sr.sprite = riverTexture;
         }
         else
         {
@@ -63,10 +65,21 @@ public class FloorTile : MonoBehaviour
     {
         return linkedObject;
     }
+    public bool HasLinkedObject()
+    {
+        return linked;
+    }
 
     public void LinkObject(MapObject mapObject)
     {
         linkedObject = mapObject;
+        linked = true;
+    }
+
+    public void BreakLink()
+    {
+        linkedObject = null;
+        linked = false;
     }
     public bool IsTraversable()
     {
@@ -81,7 +94,7 @@ public class FloorTile : MonoBehaviour
     public override string ToString()
     {
         string s;
-        if (linkedObject != null)
+        if (linked)
         {
             s = gameObject.name +
                 "\nLinked: " + linkedObject.ToString() +

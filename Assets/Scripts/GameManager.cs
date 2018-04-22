@@ -22,9 +22,9 @@ public class GameManager : MonoBehaviour
     public Pathfinding _pathing { get; internal set; }// ditto
     public GameObject groundGroup;//this is the bottom left corner of our whole map. located at the origin (0,0).
     public Camera mCamera; //use this instead of Camera.main its more efficient.
-    [HideInInspector]
     public Vector3 selectPosition = Vector2.zero; //stores the selectionSquares position so we can make it private.
-    public bool selectionLocked = false;
+    public bool selectionLocked;
+    public MapObject lockedObject;
     #endregion
 
     #region Private Variables
@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     private Text selectionText; //can change the infobox's text with the methods below
     [SerializeField]
     private GameObject devPanelObj;
+    [SerializeField]
+    private CommandMenu commandPanel;
 
     #endregion
 
@@ -57,6 +59,8 @@ public class GameManager : MonoBehaviour
 
         mCamera.transform.position = new Vector3(mapSize.x * 0.5f, mCamera.transform.position.y, mapSize.y * 0.25f); //set the camera at the center of the map.
         selectPosition = new Vector3(Mathf.Floor(mapSize.x * 0.5f), 0.01f, Mathf.Floor(mapSize.y * 0.5f)); //selection set to the very center of the map. (mapSize floored)
+        DevPanelVisible(false);
+        CommandPanelVisible(false);
     }
 
     private void Update()
@@ -64,30 +68,12 @@ public class GameManager : MonoBehaviour
         if (Time.timeScale != 0) //ANYTHING IN THIS BLOCK ADHERES TO PAUSING
         {
             GetInput();//orgainzes input code
-            SelectionMenus(); //checks for if the menus should be visible.
+            
         }                       //END OF PAUSING BLOCK
 
     }
 
-    private void SelectionMenus()
-    {
-        if(selectionLocked)
-        {
-            if(!devPanelObj.activeInHierarchy)
-            {
-                devPanelObj.SetActive(true);
-            }
-            //show menus
-        }
-        else
-        {
-            if (devPanelObj.activeInHierarchy)
-            {
-                devPanelObj.SetActive(false);
-            }
-            //hide menus
-        }
-    }
+    
     //returns the mapsize set in the inspector. this is used to determine any and all things that constrain to the max size like the board or the map.
     public Vector2 MapSize()
     {
@@ -132,7 +118,7 @@ public class GameManager : MonoBehaviour
 
             }
             _board.LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
-            selectionLocked = false;
+            SelectionLock(false);
         }
     }
     #endregion
@@ -145,14 +131,14 @@ public class GameManager : MonoBehaviour
         {
             if (selectPosition.x < mapSize.x - 1)
             {
-                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.right);
+                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.right * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
             }
         }
         else if (Input.GetKey(KeyCode.A)) // left
         {
             if (selectPosition.x > 0)
             {
-                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.left);
+                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.left * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
             }
         }
 
@@ -160,14 +146,14 @@ public class GameManager : MonoBehaviour
         {
             if (selectPosition.z < mapSize.y - 1)
             {
-                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.forward);
+                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.forward * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
             }
         }
         else if (Input.GetKey(KeyCode.S)) //down
         {
             if (selectPosition.z > 0)
             {
-                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.back);
+                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.back * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
             }
         }
 
@@ -219,10 +205,11 @@ public class GameManager : MonoBehaviour
         #endregion
 
         #region Mouse SELECTION Movement
-        Ray ray = new Ray(mCamera.ScreenToWorldPoint(Input.mousePosition), mCamera.transform.forward);
-        RaycastHit hit;
         if (!selectionLocked)
         {
+            Ray ray = new Ray(mCamera.ScreenToWorldPoint(Input.mousePosition), mCamera.transform.forward);
+            RaycastHit hit;
+
             if (Physics.Raycast(ray, out hit, 1 << 9))
             {
                 selectPosition.x = hit.transform.position.x; //could be simplified by storing x and z in a method in the floortile component?
@@ -230,35 +217,67 @@ public class GameManager : MonoBehaviour
                 UpdateInfobox(selectPosition);
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)) //left click to select tiles
             {
-                if (Physics.Raycast(ray, out hit, 1 << 9))
+                if (Physics.Raycast(ray, out hit, 1 << 9)) //NOTE: May need to take the layermask away if pathfinding requires it.
                 {
                     selectPosition.x = hit.transform.position.x; //could be simplified by storing x and z in a method in the floortile component?
                     selectPosition.z = hit.transform.position.z;
                     UpdateInfobox(selectPosition);
 
-                    selectionLocked = true;
-
+                    SelectionLock(true);
                 }
-                //TODO: Activate selection menus
             }
         }
         else
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1)) //right click to break selection lock
             {
-                if (Physics.Raycast(ray, out hit, 1 << 9))
-                {
-                    selectionLocked = false;
-
-                }
-                //TODO: Activate selection menus
+                SelectionLock(false);
             }
         }
         #endregion
 
 
+    }
+
+    /// <summary>
+    /// Controls whether the selection square is locked. if it is, takes the mapobject at the spot on the map.
+    /// </summary>
+    /// <param name="locked"></param>
+    void SelectionLock(bool locked)
+    {
+        if(locked)
+        {
+            selectionLocked = true;
+            if (_board.GetTileAt(selectPosition).HasLinkedObject())
+            {
+                lockedObject = _board.GetTileAt(selectPosition).GetLinkedObject();
+                print("linked object: " + lockedObject.name);
+                CommandPanelVisible(true);
+            }
+            else
+            {
+                DevPanelVisible(true);
+                print("no object to lock");
+            }
+
+        }
+        else
+        {
+            selectionLocked = false;
+            lockedObject = null;
+            DevPanelVisible(false);
+        }
+    }
+
+    void DevPanelVisible(bool visible)
+    {
+        devPanelObj.SetActive(visible);
+    }
+    void CommandPanelVisible(bool visible)
+    {
+        commandPanel.gameObject.SetActive(visible);
     }
 
     #region InfoBox + Overload Methods
