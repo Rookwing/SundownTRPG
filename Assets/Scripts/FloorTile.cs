@@ -7,6 +7,7 @@ public class FloorTile : MonoBehaviour
 
     private bool traversable;
     private MapObject linkedObject = null;
+    private bool linked;
     private FloorType type;
     private SpriteRenderer sr;
 
@@ -24,35 +25,41 @@ public class FloorTile : MonoBehaviour
     }
     public void Initialize(FloorType floorType)
     {
+        linked = false;
         sr = gameObject.GetComponent<SpriteRenderer>();
         sr.color = Color.white;
-        
+
 
         type = floorType;
         if (type == FloorType.Grass)
         {
             traversable = true;
             sr.sprite = grassTexture;
+            gameObject.layer = 9;
         }
         else if (type == FloorType.Dirt)
         {
             traversable = true;
             sr.sprite = dirtTexture;
+            gameObject.layer = 9;
         }
         else if (type == FloorType.Forest)
         {
             traversable = true;
             sr.sprite = grassTexture;
+            gameObject.layer = 9;
         }
         else if (type == FloorType.Mountain)
         {
             traversable = false;
             sr.sprite = rockTexture;
+            gameObject.layer = 8;
         }
         else if (type == FloorType.River)
-        {            
+        {
             traversable = false;
-            sr.sprite = riverTexture;            
+            sr.sprite = riverTexture;
+            gameObject.layer = 8;
         }
         else
         {
@@ -63,10 +70,21 @@ public class FloorTile : MonoBehaviour
     {
         return linkedObject;
     }
+    public bool HasLinkedObject()
+    {
+        return linked;
+    }
 
     public void LinkObject(MapObject mapObject)
     {
         linkedObject = mapObject;
+        linked = true;
+    }
+
+    public void BreakLink()
+    {
+        linkedObject = null;
+        linked = false;
     }
     public bool IsTraversable()
     {
@@ -81,7 +99,7 @@ public class FloorTile : MonoBehaviour
     public override string ToString()
     {
         string s;
-        if (linkedObject != null)
+        if (linked)
         {
             s = gameObject.name +
                 "\nLinked: " + linkedObject.ToString() +

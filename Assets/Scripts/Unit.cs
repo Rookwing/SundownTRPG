@@ -19,12 +19,14 @@ public class Unit : MonoBehaviour
     #region Public Variables
     public int speed = 2;
     public Sprite tempUnitSprite;
+    public bool selected = false;
     #endregion
 
     #region Private Variables
-    private MapObject mapObject; //parent holding map data
-    private FloorTile targetTile;
+    //private MapObject mapObject; //parent holding map data
+    private FloorTile targetTile;    
     #endregion
+
 
     #region Enumerations
 
@@ -33,7 +35,15 @@ public class Unit : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        mapObject = GetComponent<MapObject>();
+        //mapObject = GetComponent<MapObject>();
+    }
+
+    private void OnMouseDown()
+    {
+        if (GameManager._gm._pathing.seeker != null && GameManager._gm._pathing.seeker != this.transform)
+            GameManager._gm._pathing.target = this.transform;
+        else
+            GameManager._gm._pathing.seeker = this.transform;
     }
     #endregion
 
