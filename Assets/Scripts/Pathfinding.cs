@@ -18,7 +18,12 @@ public class Pathfinding : MonoBehaviour {
         if (seeker != null && target != null)
             FindPath(seeker.position, target.position);
     }
-
+    public void ClearPath()
+    {
+        seeker = null;
+        target = null;
+        board.path = null;
+    }
     void FindPath(Vector3 startPos, Vector3 targetpos)
     {
         Node startNode = board.NodeFromWorldPoint(startPos);

@@ -49,6 +49,15 @@ public class Board : MonoBehaviour
     {
         return tiles[Mathf.RoundToInt(v3.x), Mathf.RoundToInt(v3.z)];
     }
+    /// <summary>
+    /// Takes a Vector2, meant to take the mapPosition
+    /// </summary>
+    /// <param name="v3">map position</param>
+    /// <returns></returns>
+    public FloorTile GetTileAt(Vector2 v2)
+    {
+        return tiles[Mathf.RoundToInt(v2.x), Mathf.RoundToInt(v2.y)];
+    }
 
     void CreateGrid()
     {
@@ -248,7 +257,8 @@ public class Board : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (GameManager._gm.groundGroup)
+        if (!Application.isPlaying) return;
+        if (GameManager._gm.groundGroup != null)
         {
             //print(GameManager._gm.groundGroup);
             Gizmos.DrawWireCube(

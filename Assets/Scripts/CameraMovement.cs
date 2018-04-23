@@ -10,6 +10,8 @@ public class CameraMovement : MonoBehaviour
 
     public int maxX, maxY;
 
+    private Vector3 cameraOffset;
+
     private void Start()
     {
         maxX = (int)(GameManager._gm.MapSize().x);
@@ -55,5 +57,10 @@ public class CameraMovement : MonoBehaviour
     public void MoveCamera(Vector3 v3)
     {
         transform.Translate(v3 * 1.5f * Time.deltaTime, Space.World);
+    }
+    
+    public void CenterCamera(Vector3 v3)
+    {
+        transform.position = v3 + cameraOffset;
     }
 }

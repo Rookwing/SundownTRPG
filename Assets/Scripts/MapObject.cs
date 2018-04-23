@@ -6,6 +6,7 @@ public class MapObject : MonoBehaviour
 {
     public SpriteRenderer spriteObject;
     private Vector2 mapPosition;
+    private FloorTile linkedTile;
     private ObjectType type;
 
     public enum ObjectType

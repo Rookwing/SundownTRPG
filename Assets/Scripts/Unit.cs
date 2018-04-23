@@ -53,19 +53,35 @@ public class Unit : MonoBehaviour
     public IEnumerator MoveAlongPath(List<Node> p)
     {
         bool pathComplete = false;
-        GameManager._gm._board.GetTileAt(transform.position).BreakLink();
 
         while (!pathComplete)
         {
-                for (int i = 0; i < p.Count; i++)
+            for (int i = 0; i < p.Count; i++)
+            {
+                GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink();
+
+                targetNode = p[i];
+
+                bool reachedPoint = false;
+                Vector3 targetPosition = new Vector3(targetNode.gridX, transform.position.y, targetNode.gridY);
+
+                while (!reachedPoint)
                 {
-                    targetNode = p[i];
-                    transform.position = new Vector3(targetNode.gridX, transform.position.y, targetNode.gridY);
-                    yield return new WaitForSeconds(0.5f);
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, 0.5f));
+                    if (transform.position == targetPosition)
+                    {
+                        transform.position = targetPosition;
+                        reachedPoint = true;
+
+                        mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z);
+                        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);
+                    }
+                    yield return null;
                 }
-                pathComplete = true;
-                GameManager._gm._board.GetTileAt(transform.position).LinkObject(mapObject);
-            yield return null;
+                yield return null;
+            }
+
+            pathComplete = true;
         }
     }
     #endregion

@@ -18,8 +18,8 @@ public class GameManager : MonoBehaviour
     public static GameManager _gm; //global self reference. be careful.
 
     #region Public Variables
-    public Board _board { get; internal set; } //let them access the board, but not change it.
-    public Pathfinding _pathing { get; internal set; }// ditto
+    public Board _board { get; private set; } //let them access the board, but not change it.
+    public Pathfinding _pathing { get; private set; }// ditto
     public GameObject groundGroup;//this is the bottom left corner of our whole map. located at the origin (0,0).
     public Camera mCamera; //use this instead of Camera.main its more efficient.
     public Vector3 selectPosition = Vector2.zero; //stores the selectionSquares position so we can make it private.
@@ -28,18 +28,13 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region Private Variables
-    [SerializeField]
-    private GameObject mapObjectPrefab; //set in inspector, but no one needs to access it otherwise.
-    [SerializeField]
-    private Vector2 mapSize; //holds the size of the map for reference by the board and others. this is the master setting.
-    [SerializeField]
-    private SelectionSquare selectionSquare;
-    [SerializeField]
-    private Text selectionText; //can change the infobox's text with the methods below
-    [SerializeField]
-    private GameObject devPanelObj;
-    [SerializeField]
-    private CommandMenu commandPanel;
+    [SerializeField] private GameObject mapObjectPrefab; //set in inspector, but no one needs to access it otherwise.
+    [SerializeField] private Vector2 mapSize; //holds the size of the map for reference by the board and others. this is the master setting as such it is private but accessed by methods.
+    [SerializeField] private SelectionSquare selectionSquare;
+    [SerializeField] private Text selectionText; //can change the infobox's text with the methods below
+    [SerializeField] private GameObject devPanelObj;
+    [SerializeField] private CommandMenu commandPanel;
+
     private bool commandMode = false;
     #endregion
 
@@ -61,6 +56,7 @@ public class GameManager : MonoBehaviour
         selectPosition = new Vector3(Mathf.Floor(mapSize.x * 0.5f), 0.01f, Mathf.Floor(mapSize.y * 0.5f)); //selection set to the very center of the map. (mapSize floored)
         DevPanelVisible(false);
         CommandPanelVisible(false);
+        
     }
 
     private void Update()
@@ -338,11 +334,14 @@ public class GameManager : MonoBehaviour
                 {
                     print("no path yet");
 
-                    yield return 0;
+                    yield return null;
                 }
                 print("found path");
                 StartCoroutine(objectToMove.GetComponent<Unit>().MoveAlongPath(_board.path));
                 commandMode = false;
+
+                _pathing.ClearPath();
+
             }
             yield return null;
         }
