@@ -35,26 +35,31 @@ public class FloorTile : MonoBehaviour
         {
             traversable = true;
             sr.sprite = grassTexture;
+            gameObject.layer = 9;
         }
         else if (type == FloorType.Dirt)
         {
             traversable = true;
             sr.sprite = dirtTexture;
+            gameObject.layer = 9;
         }
         else if (type == FloorType.Forest)
         {
             traversable = true;
             sr.sprite = grassTexture;
+            gameObject.layer = 9;
         }
         else if (type == FloorType.Mountain)
         {
             traversable = false;
             sr.sprite = rockTexture;
+            gameObject.layer = 8;
         }
         else if (type == FloorType.River)
         {
             traversable = false;
             sr.sprite = riverTexture;
+            gameObject.layer = 8;
         }
         else
         {
