@@ -3,12 +3,17 @@
 	Properties
 	{
 		_Color("Color", COLOR) = (1,1,1,1)
-		_MainTex("Grass", 2D) = "white" {}
+		_MainTex("Main", 2D) = "white" {}
+		_GrassTex("Grass", 2D) = "white" {}
+		_DirtTex("Dirt", 2D) = "white" {}
+		_MountainTex("Mountain", 2D) = "white" {}
+		_RiverTex("River", 2D) = "white" {}
+		_ForestTex("Forest", 2D) = "white" {}
 
 	}
-	SubShader
+		SubShader
 	{
-		Tags { "RenderType"="Opaque" }
+		Tags { "RenderType" = "Opaque" }
 		LOD 100
 
 		Pass
@@ -18,7 +23,7 @@
 			#pragma fragment frag
 			// make fog work
 			#pragma multi_compile_fog
-			
+
 			#include "UnityCG.cginc"
 
 			struct appdata
@@ -35,10 +40,16 @@
 			};
 
 			sampler2D _MainTex;
+			sampler2D _GrassTex;
+			sampler2D _MountainTex;
+			sampler2D _DirtTex;
+			sampler2D _RiverTex;
+			sampler2D _ForestTex;
+
 			float4 _Color;
 			float4 _MainTex_ST;
-			
-			v2f vert (appdata v)
+
+			v2f vert(appdata v)
 			{
 				v2f o;
 				o.vertex = UnityObjectToClipPos(v.vertex);
@@ -46,16 +57,16 @@
 				UNITY_TRANSFER_FOG(o,o.vertex);
 				return o;
 			}
-			
-			fixed4 frag (v2f i) : SV_Target
+
+			fixed4 frag(v2f i) : SV_Target
 			{
 				// sample the texture
 				fixed4 col = tex2D(_MainTex, i.uv) * _Color;
-				// apply fog
-				UNITY_APPLY_FOG(i.fogCoord, col);
-				return col;
-			}
-			ENDCG
+			// apply fog
+			UNITY_APPLY_FOG(i.fogCoord, col);
+			return col;
 		}
+		ENDCG
+	}
 	}
 }

@@ -268,6 +268,8 @@ public class GameManager : MonoBehaviour
             selectionLocked = false;
             lockedObject = null;
             DevPanelVisible(false);
+            CommandPanelVisible(false);
+
         }
     }
 
