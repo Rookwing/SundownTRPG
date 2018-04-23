@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     private GameObject devPanelObj;
     [SerializeField]
     private CommandMenu commandPanel;
-
+    private bool commandMode = false;
     #endregion
 
 
@@ -245,21 +245,36 @@ public class GameManager : MonoBehaviour
     /// Controls whether the selection square is locked. if it is, takes the mapobject at the spot on the map.
     /// </summary>
     /// <param name="locked"></param>
-    void SelectionLock(bool locked)
+    public void SelectionLock(bool locked)
     {
         if(locked)
         {
-            selectionLocked = true;
-            if (_board.GetTileAt(selectPosition).HasLinkedObject())
+            if (commandMode == false)
             {
-                lockedObject = _board.GetTileAt(selectPosition).GetLinkedObject();
-                print("linked object: " + lockedObject.name);
-                CommandPanelVisible(true);
+                selectionLocked = true;
+                if (_board.GetTileAt(selectPosition).HasLinkedObject())
+                {
+                    lockedObject = _board.GetTileAt(selectPosition).GetLinkedObject();
+                    print("linked object: " + lockedObject.name);
+                    CommandPanelVisible(true);
+                }
+                else
+                {
+                    DevPanelVisible(true);
+                    print("no object to lock");
+                }
             }
             else
             {
-                DevPanelVisible(true);
-                print("no object to lock");
+                if (_board.GetTileAt(selectPosition).HasLinkedObject())
+                {
+
+                }
+                else
+                {
+                    selectionLocked = true;
+                    print("move command: " + selectPosition);
+                }
             }
 
         }
@@ -286,7 +301,7 @@ public class GameManager : MonoBehaviour
     //updates any info we need whenever called. can be overloaded to take specifics as well if need be. example below.
     void UpdateInfobox() //defaults to selection's position
     {
-        FloorTile tile = _board.GetTileAt(Mathf.FloorToInt(selectPosition.x), Mathf.FloorToInt(selectPosition.z));
+        FloorTile tile = _board.GetTileAt(Mathf.RoundToInt(selectPosition.x), Mathf.RoundToInt(selectPosition.z));
         selectionText.text = tile.ToString();
     }
     
@@ -297,15 +312,40 @@ public class GameManager : MonoBehaviour
 
     void UpdateInfobox(Vector2 v2)
     {
-        FloorTile tile = _board.GetTileAt(Mathf.FloorToInt(v2.x), Mathf.FloorToInt(v2.y));
+        FloorTile tile = _board.GetTileAt(Mathf.RoundToInt(v2.x), Mathf.RoundToInt(v2.y));
         selectionText.text = tile.ToString();
     }
 
     void UpdateInfobox(Vector3 v3)
     {
-        FloorTile tile = _board.GetTileAt(Mathf.FloorToInt(v3.x), Mathf.FloorToInt(v3.z));
+        FloorTile tile = _board.GetTileAt(Mathf.RoundToInt(v3.x), Mathf.RoundToInt(v3.z));
         selectionText.text = tile.ToString();
     }
     #endregion
 
+    public IEnumerator MoveSelectMode(GameObject objectToMove)
+    {
+        commandMode = true;
+        _pathing.seeker = objectToMove.transform;
+        SelectionLock(false);
+
+        while(commandMode == true)
+        {
+            if(selectionLocked == true)
+            {
+                _pathing.target = _board.GetTileAt(selectPosition).transform;
+                while(_board.path == null)
+                {
+                    print("no path yet");
+
+                    yield return 0;
+                }
+                print("found path");
+                StartCoroutine(objectToMove.GetComponent<Unit>().MoveAlongPath(_board.path));
+                commandMode = false;
+            }
+            yield return null;
+        }
+        yield return null;
+    }
 }

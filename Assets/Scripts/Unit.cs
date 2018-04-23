@@ -12,7 +12,7 @@ Description:
 
 ===================================*/
 
-    [RequireComponent(typeof(MapObject))]
+[RequireComponent(typeof(MapObject))]
 public class Unit : MonoBehaviour
 {
 
@@ -23,8 +23,10 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region Private Variables
-    //private MapObject mapObject; //parent holding map data
-    private FloorTile targetTile;    
+    private MapObject mapObject; //parent holding map data
+    private FloorTile targetTile;
+    Node targetNode;
+
     #endregion
 
 
@@ -35,7 +37,7 @@ public class Unit : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        //mapObject = GetComponent<MapObject>();
+        mapObject = GetComponent<MapObject>();
     }
 
     private void OnMouseDown()
@@ -48,6 +50,23 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region Custom Methods
+    public IEnumerator MoveAlongPath(List<Node> p)
+    {
+        bool pathComplete = false;
+        GameManager._gm._board.GetTileAt(transform.position).BreakLink();
 
+        while (!pathComplete)
+        {
+                for (int i = 0; i < p.Count; i++)
+                {
+                    targetNode = p[i];
+                    transform.position = new Vector3(targetNode.gridX, transform.position.y, targetNode.gridY);
+                    yield return new WaitForSeconds(0.5f);
+                }
+                pathComplete = true;
+                GameManager._gm._board.GetTileAt(transform.position).LinkObject(mapObject);
+            yield return null;
+        }
+    }
     #endregion
 }

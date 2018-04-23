@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
+    public List<Node> path;
+
+
 
     public LayerMask unwalkableMask;
     [HideInInspector]
@@ -44,7 +47,7 @@ public class Board : MonoBehaviour
     /// <returns></returns>
     public FloorTile GetTileAt(Vector3 v3)
     {
-        return tiles[Mathf.FloorToInt(v3.x), Mathf.FloorToInt(v3.z)];
+        return tiles[Mathf.RoundToInt(v3.x), Mathf.RoundToInt(v3.z)];
     }
 
     void CreateGrid()
@@ -65,7 +68,7 @@ public class Board : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector3 worldPoint = worldBtmLft + Vector3.right * (x * nodeDiameter) + Vector3.forward * (y * nodeDiameter);
-                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask)); //TODO: Check for terrain walkability, not using layers, on node generation
+                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
                 Node n = new Node(walkable, worldPoint, x, y);
                 grid[x, y] = n;
             }
@@ -236,36 +239,39 @@ public class Board : MonoBehaviour
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
-        return grid[x, y];
+        int x = Mathf.FloorToInt((gridSizeX - 1) * percentX);
+        int y = Mathf.FloorToInt((gridSizeY - 1) * percentY);
+        return grid[x+1, y+1];
     }
 
-    public List<Node> path;
 
 
     private void OnDrawGizmos()
     {
-        //print(GameManager._gm.groundGroup);
-        Gizmos.DrawWireCube(
-            GameManager._gm.groundGroup.transform.position + groundOffset, 
-            new Vector3(
-                GameManager._gm.MapSize().x, 1, GameManager._gm.MapSize().y
-                ));
-        if (drawGizmos)
+        if (GameManager._gm.groundGroup)
         {
-
-            if (grid != null)
+            //print(GameManager._gm.groundGroup);
+            Gizmos.DrawWireCube(
+                GameManager._gm.groundGroup.transform.position + groundOffset,
+                new Vector3(
+                    GameManager._gm.MapSize().x, 1, GameManager._gm.MapSize().y
+                    ));
+            if (drawGizmos)
             {
-                foreach (Node n in grid)
-                {
-                    Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                    if (path != null)
-                        if (path.Contains(n))
-                            Gizmos.color = Color.black;
 
-                    //Gizmos.DrawCube(n.worldPosition + nodecubeOffset, Vector3.one * (nodeDiameter - .1f));
-                    Gizmos.DrawSphere(n.worldPosition, .1f);
+                if (grid != null)
+                {
+                    foreach (Node n in grid)
+                    {
+                        Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                        if (path != null)
+                        {
+                            if (path.Contains(n))
+                                Gizmos.color = Color.black;
+                        }
+                        //Gizmos.DrawCube(n.worldPosition + nodecubeOffset, Vector3.one * (nodeDiameter - .1f));
+                        Gizmos.DrawCube(n.worldPosition, Vector3.one * .1f);
+                    }
                 }
             }
         }
