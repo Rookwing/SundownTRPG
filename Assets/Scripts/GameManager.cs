@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         selectPosition = new Vector3(Mathf.Floor(mapSize.x * 0.5f), 0.01f, Mathf.Floor(mapSize.y * 0.5f)); //selection set to the very center of the map. (mapSize floored)
         DevPanelVisible(false);
         CommandPanelVisible(false);
-        
+
     }
 
     private void Update()
@@ -64,12 +64,12 @@ public class GameManager : MonoBehaviour
         if (Time.timeScale != 0) //ANYTHING IN THIS BLOCK ADHERES TO PAUSING
         {
             GetInput();//orgainzes input code
-            
+
         }                       //END OF PAUSING BLOCK
 
     }
 
-    
+
     //returns the mapsize set in the inspector. this is used to determine any and all things that constrain to the max size like the board or the map.
     public Vector2 MapSize()
     {
@@ -122,19 +122,19 @@ public class GameManager : MonoBehaviour
     private void GetInput()
     {
         #region Keyboard CAMERA Movement
-        
+
         if (Input.GetKey(KeyCode.D)) //Right direction
         {
             if (selectPosition.x < mapSize.x - 1)
             {
-                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.right * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
+                mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.right * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
             }
         }
         else if (Input.GetKey(KeyCode.A)) // left
         {
             if (selectPosition.x > 0)
             {
-                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.left * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
+                mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.left * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
             }
         }
 
@@ -142,14 +142,14 @@ public class GameManager : MonoBehaviour
         {
             if (selectPosition.z < mapSize.y - 1)
             {
-                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.forward * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
+                mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.forward * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
             }
         }
         else if (Input.GetKey(KeyCode.S)) //down
         {
             if (selectPosition.z > 0)
             {
-                mCamera.GetComponent<CameraMovement>().MoveCamera( Vector3.back * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
+                mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.back * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
             }
         }
 
@@ -243,7 +243,7 @@ public class GameManager : MonoBehaviour
     /// <param name="locked"></param>
     public void SelectionLock(bool locked)
     {
-        if(locked)
+        if (locked)
         {
             if (commandMode == false)
             {
@@ -263,6 +263,10 @@ public class GameManager : MonoBehaviour
             else
             {
                 if (_board.GetTileAt(selectPosition).HasLinkedObject())
+                {
+
+                }
+                else if (_board.GetTileAt(selectPosition).IsTraversable() == false)
                 {
 
                 }
@@ -300,7 +304,7 @@ public class GameManager : MonoBehaviour
         FloorTile tile = _board.GetTileAt(Mathf.RoundToInt(selectPosition.x), Mathf.RoundToInt(selectPosition.z));
         selectionText.text = tile.ToString();
     }
-    
+
     public void UpdateInfobox(string s)
     {
         selectionText.text = s;
@@ -325,12 +329,12 @@ public class GameManager : MonoBehaviour
         _pathing.seeker = objectToMove.transform;
         SelectionLock(false);
 
-        while(commandMode == true)
+        while (commandMode == true)
         {
-            if(selectionLocked == true)
+            if (selectionLocked == true)
             {
                 _pathing.target = _board.GetTileAt(selectPosition).transform;
-                while(_board.path == null)
+                while (_board.path == null)
                 {
                     print("no path yet");
 
