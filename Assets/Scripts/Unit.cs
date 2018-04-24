@@ -77,7 +77,7 @@ public class Unit : MonoBehaviour
                 while (!reachedPoint)//start looping the coroutine (save unity scene/project before testing anything, assets are safe.)
                 {
                     transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed*.1f));  //smoothly transition to the next node. the float in the Lerp is the speed.
-                    if (transform.position == targetPosition)//if weve made it
+                    if (Vector3.Distance(transform.position, targetPosition) < .1f)//if weve made it
                     {
                         transform.position = targetPosition;
                         reachedPoint = true;//stop looping
@@ -112,7 +112,7 @@ public class Unit : MonoBehaviour
                 while (!reachedPoint)
                 {
                     transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed*.1f));
-                    if (transform.position == targetPosition)
+                    if (Vector3.Distance(transform.position, targetPosition) < .1f)
                     {
                         reachedPoint = true;
 

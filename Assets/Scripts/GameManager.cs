@@ -126,32 +126,24 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D)) //Right direction
         {
-            if (selectPosition.x < mapSize.x - 1)
-            {
                 mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.right * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
-            }
+            
         }
         else if (Input.GetKey(KeyCode.A)) // left
         {
-            if (selectPosition.x > 0)
-            {
                 mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.left * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
-            }
+            
         }
 
         if (Input.GetKey(KeyCode.W)) //up
         {
-            if (selectPosition.z < mapSize.y - 1)
-            {
                 mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.forward * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
-            }
+            
         }
         else if (Input.GetKey(KeyCode.S)) //down
         {
-            if (selectPosition.z > 0)
-            {
                 mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.back * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
-            }
+            
         }
 
         #endregion
