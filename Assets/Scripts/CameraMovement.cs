@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-
+    [Range(0,1)]
     public float scrollSpeed;
     public int scrollDist;
 
@@ -14,8 +14,8 @@ public class CameraMovement : MonoBehaviour
 
     private void Start()
     {
-        maxX = (int)(GameManager._gm.MapSize().x);
-        maxY = (int)(GameManager._gm.MapSize().y);
+        maxX = (int)(GameManager._gm.MapSize().x*0.5f);
+        maxY = (int)(GameManager._gm.MapSize().y*0.5f);
     }
 
     private void Update()
@@ -41,13 +41,13 @@ public class CameraMovement : MonoBehaviour
             }
 
             if (posX > maxX)
-                MoveCamera(Vector3.left * .5f * Time.deltaTime);
+                MoveCamera(Vector3.left * .5f);
             if (posX < -maxX)
-                MoveCamera(Vector3.right * .5f * Time.deltaTime);
+                MoveCamera(Vector3.right * .5f);
             if (posY > maxY)
-                MoveCamera(Vector3.back * 1.5f * Time.deltaTime);
+                MoveCamera(Vector3.back * 1.5f);
             if (posY < -maxY)
-                MoveCamera(Vector3.forward * 1.5f * Time.deltaTime);
+                MoveCamera(Vector3.forward * 1.5f);
         }
     }
 
@@ -56,7 +56,7 @@ public class CameraMovement : MonoBehaviour
     //works exactly the same as calling transform.Translate but says move camera for readability
     public void MoveCamera(Vector3 v3)
     {
-        transform.Translate(v3 * 1.5f * Time.deltaTime, Space.World);
+        transform.Translate(v3, Space.World);
     }
     
     public void CenterCamera(Vector3 v3)

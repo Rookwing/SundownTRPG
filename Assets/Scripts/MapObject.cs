@@ -20,6 +20,10 @@ public class MapObject : MonoBehaviour
     {
         return mapPosition;
     }
+    public ObjectType GetType()
+    {
+        return type;
+    }
 
     public void Initialize(ObjectType t, int mapX, int mapY)
     {

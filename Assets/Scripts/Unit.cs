@@ -17,7 +17,10 @@ public class Unit : MonoBehaviour
 {
 
     #region Public Variables
-    public int speed = 2;
+    public int health = 100;
+    public int damage = 100;
+    public float range = 1;
+    public float speed = 2;
     public Sprite tempUnitSprite;
     public bool selected = false;
     #endregion
@@ -39,42 +42,48 @@ public class Unit : MonoBehaviour
     {
         mapObject = GetComponent<MapObject>();
     }
-
-    private void OnMouseDown()
+    private void Update()
     {
-        if (GameManager._gm._pathing.seeker != null && GameManager._gm._pathing.seeker != this.transform)
-            GameManager._gm._pathing.target = this.transform;
-        else
-            GameManager._gm._pathing.seeker = this.transform;
+        if(health <= 0)
+        {
+            Death();
+        }
     }
+
+    private void Death()
+    {
+        Destroy(gameObject); //TODO: properly dispose of Units for garbage?
+    }
+    
     #endregion
 
     #region Custom Methods
     public IEnumerator MoveAlongPath(List<Node> p)
     {
+        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink(); //before anything break the link to the map
+
         bool pathComplete = false;
 
         while (!pathComplete)
         {
-            for (int i = 0; i < p.Count; i++)
+            for (int i = 0; i < p.Count; i++) //every Node in the list
             {
-                GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink();
 
                 targetNode = p[i];
 
-                bool reachedPoint = false;
-                Vector3 targetPosition = new Vector3(targetNode.gridX, transform.position.y, targetNode.gridY);
+                Vector3 targetPosition = new Vector3(targetNode.gridX, transform.position.y, targetNode.gridY); //transform the nodes worldspace to "mapspace"
 
-                while (!reachedPoint)
+                bool reachedPoint = false;
+                while (!reachedPoint)//start looping the coroutine (save unity scene/project before testing anything, assets are safe.)
                 {
-                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, 0.5f));
-                    if (transform.position == targetPosition)
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed*.1f));  //smoothly transition to the next node. the float in the Lerp is the speed.
+                    if (transform.position == targetPosition)//if weve made it
                     {
                         transform.position = targetPosition;
-                        reachedPoint = true;
+                        reachedPoint = true;//stop looping
 
-                        mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z);
-                        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);
+                        mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z);//update our mapobject
+                        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);//and link it
                     }
                     yield return null;
                 }
@@ -84,5 +93,73 @@ public class Unit : MonoBehaviour
             pathComplete = true;
         }
     }
+
+    //this is the same as MoveAlongPath but with differences Commented
+    public IEnumerator AttackAlongPath(List<Node> p)
+    {
+        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink();
+
+        bool pathComplete = false;
+        while (!pathComplete)
+        {
+            for (int i = 0; i < p.Count-1; i++)//p.Count-1 stops just before the target location, in this case it stops us from occupying the same space as the target.
+            {
+
+                targetNode = p[i];
+                Vector3 targetPosition = new Vector3(targetNode.gridX, transform.position.y, targetNode.gridY);
+
+                bool reachedPoint = false;
+                while (!reachedPoint)
+                {
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed*.1f));
+                    if (transform.position == targetPosition)
+                    {
+                        reachedPoint = true;
+
+                        mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z);
+                        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);
+
+                        if(Attack(p[p.Count-1].gridPosition)) //check for linked object and if successful attack
+                        {
+
+                        }
+                        else //what to do if we tried to attack nothing
+                        {
+
+                        }
+                    }
+                    yield return null;
+                }
+                yield return null;
+            }
+
+            pathComplete = true;
+        }
+    }
+
+    bool Attack(Vector2 targetMapPosition)
+    {
+        FloorTile targetTile = GameManager._gm._board.GetTileAt(targetMapPosition); //save our target tile position
+
+        if(targetTile.HasLinkedObject()) //object should have an mapobject on it
+        {
+            if(targetTile.GetLinkedObject().GetType() == MapObject.ObjectType.Unit)
+            {
+                targetTile.GetLinkedObject().GetComponent<Unit>().Damage();
+            }
+            return true;
+        }
+        else
+        {
+            print("Failed to attack " + targetTile.gameObject.name);
+            return false;
+        }
+    }
+
+    void Damage()
+    {
+
+    }
+    
     #endregion
 }

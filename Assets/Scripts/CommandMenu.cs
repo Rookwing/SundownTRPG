@@ -12,6 +12,7 @@ public class CommandMenu : MonoBehaviour {
 
     public void AttackCommand()
     {
+        GameManager._gm.StartCoroutine(GameManager._gm.AttackSelectMode(GameManager._gm.lockedObject.gameObject));
 
     }
 }

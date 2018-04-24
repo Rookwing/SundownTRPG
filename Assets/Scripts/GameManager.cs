@@ -35,7 +35,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject devPanelObj;
     [SerializeField] private CommandMenu commandPanel;
 
-    private bool commandMode = false;
+    private bool commandMode = false; //TODO: turn commandMode into an enum for attacking/moving/selecting/etc
+    private bool attacking = false;
     #endregion
 
 
@@ -238,42 +239,55 @@ public class GameManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Controls whether the selection square is locked. if it is, takes the mapobject at the spot on the map.
+    /// Controls whether the selection square is locked.
+    /// If the square is locked, does the appropriate action depending on the previous command
     /// </summary>
-    /// <param name="locked"></param>
+    /// <param name="locked">are you selecting a tile?</param>
     public void SelectionLock(bool locked)
     {
         if (locked)
         {
-            if (commandMode == false)
+            FloorTile targetTile = _board.GetTileAt(selectPosition);
+            if (commandMode == false) //normal selection
             {
                 selectionLocked = true;
-                if (_board.GetTileAt(selectPosition).HasLinkedObject())
+                if (targetTile.HasLinkedObject()) //if locking on to a tile with an object
                 {
-                    lockedObject = _board.GetTileAt(selectPosition).GetLinkedObject();
-                    print("linked object: " + lockedObject.name);
-                    CommandPanelVisible(true);
+                    lockedObject = targetTile.GetLinkedObject();//lock on to the object as well
+                    //print("linked object: " + lockedObject.name);
+                    CommandPanelVisible(true); //display the command panel
                 }
-                else
+                else //if no object is present
                 {
-                    DevPanelVisible(true);
+                    DevPanelVisible(true); //show the dev spawn menu //TODO: implement a dev mode bool
                     print("no object to lock");
                 }
             }
-            else
+            else //command mode active
             {
-                if (_board.GetTileAt(selectPosition).HasLinkedObject())
+                if (attacking)
                 {
+                    if (targetTile.HasLinkedObject()) //if theres an object, 
+                    {
+                        if (targetTile.GetLinkedObject().GetType() == MapObject.ObjectType.Unit) //check for unit type. important for damage scripts
+                        {
+                            selectionLocked = true; //locking continues on with attack mode coroutine
+                        }
+                        else
+                        {
 
-                }
-                else if (_board.GetTileAt(selectPosition).IsTraversable() == false)
-                {
+                        }
+                    }//print("move command: " + selectPosition);
 
                 }
                 else
                 {
-                    selectionLocked = true;
-                    print("move command: " + selectPosition);
+                    if (targetTile.IsTraversable()) //if selected tile is walkable
+                    {
+                        selectionLocked = true; //locking continues with move mode coroutine
+                    }
+
+
                 }
             }
 
@@ -325,7 +339,40 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator MoveSelectMode(GameObject objectToMove)
     {
+        commandMode = true;//activate command mode, but not attacking
+        attacking = false;
+        _pathing.seeker = objectToMove.transform; //set the current object to be the seeker
+        SelectionLock(false); //now that object is saved, unlock selection //NOTE: might want to make the old object remain the focus for later?
+
+        while (commandMode == true) //looping
+        {
+            if (selectionLocked == true) //locking in command mode starts next phase
+            {
+                _pathing.target = _board.GetTileAt(selectPosition).transform; //set the path target
+                selectionLocked = false; //unlock for ease
+                while (_board.path == null)
+                {
+                    //print("no path yet");
+
+                    yield return null;//think until we've found a path
+                }
+                //print("found path");
+                StartCoroutine(objectToMove.GetComponent<Unit>().MoveAlongPath(_board.path)); //unit starts moving
+                commandMode = false; //stop commanding
+
+                _pathing.ClearPath(); //clear the seeker, target, and path data
+
+            }
+            yield return null;
+        }
+        yield return null;
+    }
+
+    public IEnumerator AttackSelectMode(GameObject objectToMove)
+    {
+        //same comments as MoveSelectMode, but changes are noted
         commandMode = true;
+        attacking = true; //sets attacking to true
         _pathing.seeker = objectToMove.transform;
         SelectionLock(false);
 
@@ -334,15 +381,17 @@ public class GameManager : MonoBehaviour
             if (selectionLocked == true)
             {
                 _pathing.target = _board.GetTileAt(selectPosition).transform;
+                selectionLocked = false;
                 while (_board.path == null)
                 {
-                    print("no path yet");
+                    ///print("no path yet");
 
                     yield return null;
                 }
-                print("found path");
-                StartCoroutine(objectToMove.GetComponent<Unit>().MoveAlongPath(_board.path));
+                //print("found path");
+                StartCoroutine(objectToMove.GetComponent<Unit>().AttackAlongPath(_board.path)); //starts a different unit coroutine for attack and moving. Most of the differences are there.
                 commandMode = false;
+                attacking = false;
 
                 _pathing.ClearPath();
 

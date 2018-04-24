@@ -250,7 +250,7 @@ public class Board : MonoBehaviour
 
         int x = Mathf.FloorToInt((gridSizeX - 1) * percentX);
         int y = Mathf.FloorToInt((gridSizeY - 1) * percentY);
-        return grid[x+1, y+1];
+        return grid[x+1, y+1]; //Preston: not sure why this is +1 but without it the path was always (-1,-1) off so whatever? Possibly due to when i changed grid to orient around the bottom left instead of center. it works
     }
 
 
