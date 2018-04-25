@@ -44,7 +44,7 @@ public class Unit : MonoBehaviour
     }
     private void Update()
     {
-        if(health <= 0)
+        if (health <= 0)
         {
             Death();
         }
@@ -54,7 +54,7 @@ public class Unit : MonoBehaviour
     {
         Destroy(gameObject); //TODO: properly dispose of Units for garbage?
     }
-    
+
     #endregion
 
     #region Custom Methods
@@ -76,14 +76,13 @@ public class Unit : MonoBehaviour
                 bool reachedPoint = false;
                 while (!reachedPoint)//start looping the coroutine (save unity scene/project before testing anything, assets are safe.)
                 {
-                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed*.1f));  //smoothly transition to the next node. the float in the Lerp is the speed.
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed * .1f));  //smoothly transition to the next node. the float in the Lerp is the speed.
                     if (Vector3.Distance(transform.position, targetPosition) < .1f)//if weve made it
                     {
                         transform.position = targetPosition;
                         reachedPoint = true;//stop looping
 
                         mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z);//update our mapobject
-                        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);//and link it
                     }
                     yield return null;
                 }
@@ -91,6 +90,7 @@ public class Unit : MonoBehaviour
             }
 
             pathComplete = true;
+            GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);//and link it
         }
     }
 
@@ -102,7 +102,7 @@ public class Unit : MonoBehaviour
         bool pathComplete = false;
         while (!pathComplete)
         {
-            for (int i = 0; i < p.Count-1; i++)//p.Count-1 stops just before the target location, in this case it stops us from occupying the same space as the target.
+            for (int i = 0; i < p.Count - 1; i++)//p.Count-1 stops just before the target location, in this case it stops us from occupying the same space as the target.
             {
 
                 targetNode = p[i];
@@ -111,15 +111,14 @@ public class Unit : MonoBehaviour
                 bool reachedPoint = false;
                 while (!reachedPoint)
                 {
-                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed*.1f));
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed * .1f));
                     if (Vector3.Distance(transform.position, targetPosition) < .1f)
                     {
                         reachedPoint = true;
 
-                        mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z);
-                        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);
+                        mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z); //update map location
 
-                        if(Attack(p[p.Count-1].gridPosition)) //check for linked object and if successful attack
+                        if (Attack(p[p.Count - 1].gridPosition)) //check for linked object and if successful attack
                         {
 
                         }
@@ -134,6 +133,7 @@ public class Unit : MonoBehaviour
             }
 
             pathComplete = true;
+            GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject); //link final location
         }
     }
 
@@ -141,9 +141,9 @@ public class Unit : MonoBehaviour
     {
         FloorTile targetTile = GameManager._gm._board.GetTileAt(targetMapPosition); //save our target tile position
 
-        if(targetTile.HasLinkedObject()) //object should have an mapobject on it
+        if (targetTile.HasLinkedObject()) //object should have an mapobject on it
         {
-            if(targetTile.GetLinkedObject().GetType() == MapObject.ObjectType.Unit)
+            if (targetTile.GetLinkedObject().GetType() == MapObject.ObjectType.Unit)
             {
                 targetTile.GetLinkedObject().GetComponent<Unit>().Damage();
             }
@@ -160,6 +160,6 @@ public class Unit : MonoBehaviour
     {
 
     }
-    
+
     #endregion
 }
