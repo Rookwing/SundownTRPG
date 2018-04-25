@@ -141,9 +141,9 @@ public class Unit : MonoBehaviour
     {
         FloorTile targetTile = GameManager._gm._board.GetTileAt(targetMapPosition); //save our target tile position
 
-        if (targetTile.HasLinkedObject()) //object should have an mapobject on it
+        if (targetTile.HasLinkedObject()) //object should have an mapobject on it, but check anyway
         {
-            if (targetTile.GetLinkedObject().GetType() == MapObject.ObjectType.Unit)
+            if (targetTile.GetLinkedObject().GetMapObjectType() == MapObject.ObjectType.Unit)
             {
                 targetTile.GetLinkedObject().GetComponent<Unit>().Damage();
             }

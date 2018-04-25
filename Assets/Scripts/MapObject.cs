@@ -20,7 +20,7 @@ public class MapObject : MonoBehaviour
     {
         return mapPosition;
     }
-    public ObjectType GetType()
+    public ObjectType GetMapObjectType()
     {
         return type;
     }

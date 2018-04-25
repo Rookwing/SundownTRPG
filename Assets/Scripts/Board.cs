@@ -18,7 +18,7 @@ public class Board : MonoBehaviour
     private float nodeDiameter;
     private Node[,] grid;
     private FloorTile[,] tiles;
-    private Vector3 nodecubeOffset;
+    //private Vector3 nodecubeOffset;
     private Vector3 groundOffset;
 
     [SerializeField]
@@ -64,7 +64,7 @@ public class Board : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = (int)GameManager._gm.MapSize().x;
         gridSizeY = (int)GameManager._gm.MapSize().y;
-        nodecubeOffset = new Vector3(-nodeRadius, 0, -nodeRadius);
+        //nodecubeOffset = new Vector3(-nodeRadius, 0, -nodeRadius);
         groundOffset = new Vector3(gridSizeX * .5f - nodeRadius, 0, gridSizeY * .5f - nodeRadius);
 
 
@@ -248,9 +248,9 @@ public class Board : MonoBehaviour
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
 
-        int x = Mathf.FloorToInt((gridSizeX - 1) * percentX);
-        int y = Mathf.FloorToInt((gridSizeY - 1) * percentY);
-        return grid[x+1, y+1]; //Preston: not sure why this is +1 but without it the path was always (-1,-1) off so whatever? Possibly due to when i changed grid to orient around the bottom left instead of center. it works
+        int x = Mathf.FloorToInt((gridSizeX) * percentX);
+        int y = Mathf.FloorToInt((gridSizeY) * percentY);
+        return grid[x, y]; 
     }
 
 

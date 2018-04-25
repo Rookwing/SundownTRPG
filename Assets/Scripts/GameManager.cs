@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
         _board.CreateMap(mapSize); //the board holds all the map information now.
 
-        mCamera.transform.position = new Vector3(mapSize.x * 0.5f, mCamera.transform.position.y, mapSize.y * 0.25f); //set the camera at the center of the map.
+        //mCamera.transform.position = new Vector3(mapSize.x * 0.5f, mCamera.transform.position.y, mapSize.y * 0.25f); //set the camera at the center of the map.
         selectPosition = new Vector3(Mathf.Floor(mapSize.x * 0.5f), 0.01f, Mathf.Floor(mapSize.y * 0.5f)); //selection set to the very center of the map. (mapSize floored)
         DevPanelVisible(false);
         CommandPanelVisible(false);
@@ -261,7 +261,7 @@ public class GameManager : MonoBehaviour
                 {
                     if (targetTile.HasLinkedObject()) //if theres an object, 
                     {
-                        if (targetTile.GetLinkedObject().GetType() == MapObject.ObjectType.Unit) //check for unit type. important for damage scripts
+                        if (targetTile.GetLinkedObject().GetMapObjectType() == MapObject.ObjectType.Unit) //check for unit type. important for damage scripts
                         {
                             selectionLocked = true; //locking continues on with attack mode coroutine
                         }

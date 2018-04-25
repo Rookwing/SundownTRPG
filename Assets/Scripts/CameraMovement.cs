@@ -14,6 +14,7 @@ public class CameraMovement : MonoBehaviour
 
     private void Start()
     {
+        cameraOffset = GameManager._gm.groundGroup.transform.position - transform.position;
         maxX = (int)(GameManager._gm.MapSize().x);
         maxY = (int)(GameManager._gm.MapSize().y);
         scrollSpeed = scrollSpeed * 2;
@@ -21,9 +22,6 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
-        var posX = transform.position.x;
-        var posY = transform.position.z;
-
         if (GameManager._gm.selectionLocked == false)
         {
             var mousePosX = Input.mousePosition.x;
@@ -38,7 +36,6 @@ public class CameraMovement : MonoBehaviour
                 MoveCamera(Vector3.back * scrollSpeed * Time.deltaTime);
             if (mousePosY >= Screen.height - scrollDist)
                 MoveCamera(Vector3.forward * scrollSpeed * Time.deltaTime);
-
         }
     }
 
