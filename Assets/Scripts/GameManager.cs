@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
     private bool commandMode = false; //TODO: turn commandMode into an enum for attacking/moving/selecting/etc
     private bool attacking = false;
-    private List<FloorTile> rangeDisplay;
+    private List<FloorTile> selectable;
     #endregion
 
 
@@ -338,10 +338,11 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator MoveSelectMode(GameObject objectToMove)
     {
+        Unit unit = objectToMove.GetComponent<Unit>();
         commandMode = true;//activate command mode, but not attacking
         attacking = false;
         _pathing.seeker = objectToMove.transform; //set the current object to be the seeker
-        rangeDisplay = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), 2);
+        selectable = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), (int)unit.speed, false);
 
         SelectionLock(false); //now that object is saved, unlock selection //NOTE: might want to make the old object remain the focus for later?
 
@@ -349,35 +350,44 @@ public class GameManager : MonoBehaviour
         {
             if (selectionLocked == true) //locking in command mode starts next phase
             {
-                _pathing.target = _board.GetTileAt(selectPosition).transform; //set the path target
-                selectionLocked = false; //unlock for ease
-                while (_board.path == null)
+                FloorTile selectedTile = _board.GetTileAt(selectPosition);
+
+                if (selectable.Contains(selectedTile))
                 {
-                    //print("no path yet");
+                    _pathing.target = selectedTile.transform; //set the path target
+                    selectionLocked = false; //unlock for ease
+                    while (_board.path == null)
+                    {
+                        //print("no path yet");
 
-                    yield return null;//think until we've found a path
+                        yield return null;//think until we've found a path
+                    }
+                    //print("found path");
+                    StartCoroutine(objectToMove.GetComponent<Unit>().MoveAlongPath(_board.path)); //unit starts moving
+                    commandMode = false; //stop commanding
                 }
-                //print("found path");
-                StartCoroutine(objectToMove.GetComponent<Unit>().MoveAlongPath(_board.path)); //unit starts moving
-                commandMode = false; //stop commanding
-
+                else
+                {
+                    selectionLocked = false;
+                }
 
             }
             yield return null;
         }
         _pathing.ClearPath(); //clear the seeker, target, and path data
-        _board.ClearHighlighted(rangeDisplay);
-        rangeDisplay = null;
+        _board.ClearHighlighted(selectable);
+        selectable = null;
         yield return null;
     }
 
     public IEnumerator AttackSelectMode(GameObject objectToMove)
     {
         //same comments as MoveSelectMode, but changes are noted
+        Unit unit = objectToMove.GetComponent<Unit>();
         commandMode = true;
         attacking = true; //sets attacking to true
         _pathing.seeker = objectToMove.transform;
-        rangeDisplay = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), 2);
+        selectable = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), (int)unit.speed, true);
 
         SelectionLock(false);
 
@@ -389,7 +399,7 @@ public class GameManager : MonoBehaviour
                 selectionLocked = false;
                 while (_board.path == null)
                 {
-                    ///print("no path yet");
+                    //print("no path yet");
 
                     yield return null;
                 }
@@ -402,8 +412,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
         _pathing.ClearPath();
-        _board.ClearHighlighted(rangeDisplay);
-        rangeDisplay = null;
+        _board.ClearHighlighted(selectable);
+        selectable = null;
         yield return null;
     }
 }

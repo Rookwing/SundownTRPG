@@ -250,7 +250,7 @@ public class Board : MonoBehaviour
 
         int x = Mathf.FloorToInt((gridSizeX) * percentX);
         int y = Mathf.FloorToInt((gridSizeY) * percentY);
-        return grid[x, y]; 
+        return grid[x, y];
     }
 
 
@@ -292,7 +292,7 @@ public class Board : MonoBehaviour
         return grid[posX, posY];
     }
 
-    public List<FloorTile> TilesInRange(FloorTile center, int range)
+    public List<FloorTile> TilesInRange(FloorTile center, int range, bool includeUnwalkable)
     {
         List<FloorTile> inRange = new List<FloorTile>();
 
@@ -300,8 +300,19 @@ public class Board : MonoBehaviour
         {
             if (GetDistance(currentTile, center) <= range)
             {
-                inRange.Add(currentTile);
-                currentTile.highlighted = true;
+                if (includeUnwalkable)
+                {
+                    inRange.Add(currentTile);
+                    currentTile.highlighted = true;
+                }
+                else
+                {
+                    if (currentTile.IsTraversable())
+                    {
+                        inRange.Add(currentTile);
+                        currentTile.highlighted = true;
+                    }
+                }
             }
         }
 
@@ -309,9 +320,12 @@ public class Board : MonoBehaviour
     }
     public void ClearHighlighted(List<FloorTile> list)
     {
-        foreach (FloorTile tile in list)
+        if (list != null)
         {
-            tile.highlighted = false;
+            foreach (FloorTile tile in list)
+            {
+                tile.highlighted = false;
+            }
         }
     }
 
