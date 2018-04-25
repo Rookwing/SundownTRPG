@@ -24,6 +24,7 @@ public class Pathfinding : MonoBehaviour {
         target = null;
         board.path = null;
     }
+
     void FindPath(Vector3 startPos, Vector3 targetpos)
     {
         Node startNode = board.NodeFromWorldPoint(startPos);

@@ -37,6 +37,7 @@ public class GameManager : MonoBehaviour
 
     private bool commandMode = false; //TODO: turn commandMode into an enum for attacking/moving/selecting/etc
     private bool attacking = false;
+    private List<FloorTile> rangeDisplay;
     #endregion
 
 
@@ -126,24 +127,24 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D)) //Right direction
         {
-                mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.right * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
-            
+            mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.right * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
+
         }
         else if (Input.GetKey(KeyCode.A)) // left
         {
-                mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.left * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
-            
+            mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.left * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
+
         }
 
         if (Input.GetKey(KeyCode.W)) //up
         {
-                mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.forward * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
-            
+            mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.forward * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
+
         }
         else if (Input.GetKey(KeyCode.S)) //down
         {
-                mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.back * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
-            
+            mCamera.GetComponent<CameraMovement>().MoveCamera(Vector3.back * mCamera.GetComponent<CameraMovement>().scrollSpeed * Time.deltaTime);
+
         }
 
         #endregion
@@ -217,12 +218,18 @@ public class GameManager : MonoBehaviour
                     SelectionLock(true);
                 }
             }
+
+            if (Input.GetMouseButtonDown(1)) //right click to break command mode
+            {
+                commandMode = false;
+            }
         }
         else
         {
-            if (Input.GetMouseButtonDown(1)) //right click to break selection lock
+            if (Input.GetMouseButtonDown(1)) //right click to break selection lock and command mode
             {
                 SelectionLock(false);
+                commandMode = false;
             }
         }
         #endregion
@@ -274,7 +281,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    if (targetTile.IsTraversable()) //if selected tile is walkable
+                    if (targetTile.IsTraversable() && !targetTile.HasLinkedObject()) //if selected tile is walkable and doesnt have a unit on it.
                     {
                         selectionLocked = true; //locking continues with move mode coroutine
                     }
@@ -334,6 +341,8 @@ public class GameManager : MonoBehaviour
         commandMode = true;//activate command mode, but not attacking
         attacking = false;
         _pathing.seeker = objectToMove.transform; //set the current object to be the seeker
+        rangeDisplay = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), 2);
+
         SelectionLock(false); //now that object is saved, unlock selection //NOTE: might want to make the old object remain the focus for later?
 
         while (commandMode == true) //looping
@@ -352,11 +361,13 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(objectToMove.GetComponent<Unit>().MoveAlongPath(_board.path)); //unit starts moving
                 commandMode = false; //stop commanding
 
-                _pathing.ClearPath(); //clear the seeker, target, and path data
 
             }
             yield return null;
         }
+        _pathing.ClearPath(); //clear the seeker, target, and path data
+        _board.ClearHighlighted(rangeDisplay);
+        rangeDisplay = null;
         yield return null;
     }
 
@@ -366,6 +377,8 @@ public class GameManager : MonoBehaviour
         commandMode = true;
         attacking = true; //sets attacking to true
         _pathing.seeker = objectToMove.transform;
+        rangeDisplay = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), 2);
+
         SelectionLock(false);
 
         while (commandMode == true)
@@ -385,11 +398,12 @@ public class GameManager : MonoBehaviour
                 commandMode = false;
                 attacking = false;
 
-                _pathing.ClearPath();
-
             }
             yield return null;
         }
+        _pathing.ClearPath();
+        _board.ClearHighlighted(rangeDisplay);
+        rangeDisplay = null;
         yield return null;
     }
 }

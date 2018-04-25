@@ -287,9 +287,44 @@ public class Board : MonoBehaviour
         }
     }
 
-    public Node GetNodeInfo(int posX, int posY)
+    public Node GetNode(int posX, int posY)
     {
         return grid[posX, posY];
+    }
+
+    public List<FloorTile> TilesInRange(FloorTile center, int range)
+    {
+        List<FloorTile> inRange = new List<FloorTile>();
+
+        foreach (FloorTile currentTile in tiles)
+        {
+            if (GetDistance(currentTile, center) <= range)
+            {
+                inRange.Add(currentTile);
+                currentTile.highlighted = true;
+            }
+        }
+
+        return inRange;
+    }
+    public void ClearHighlighted(List<FloorTile> list)
+    {
+        foreach (FloorTile tile in list)
+        {
+            tile.highlighted = false;
+        }
+    }
+
+    float GetDistance(FloorTile tileA, FloorTile tileB)
+    {
+        float dist;
+        Vector2 v2a, v2b;
+        v2a = new Vector2(tileA.x, tileA.y);
+        v2b = new Vector2(tileB.x, tileB.y);
+
+        dist = Vector2.Distance(v2a, v2b);
+
+        return dist;
     }
 
 }

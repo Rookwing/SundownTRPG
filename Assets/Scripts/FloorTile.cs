@@ -11,6 +11,9 @@ public class FloorTile : MonoBehaviour
     private FloorType type;
     private SpriteRenderer sr;
 
+    public int x, y;
+    public bool highlighted = false;
+
     public Sprite grassTexture;
     public Sprite rockTexture;
     public Sprite dirtTexture;
@@ -25,6 +28,8 @@ public class FloorTile : MonoBehaviour
     }
     public void Initialize(FloorType floorType)
     {
+        x = (int)transform.position.x;
+        y = (int)transform.position.z;
         linked = false;
         sr = gameObject.GetComponent<SpriteRenderer>();
         sr.color = Color.white;
@@ -111,5 +116,18 @@ public class FloorTile : MonoBehaviour
                 "\nType: " + type.ToString();
         }
         return s;
+    }
+
+    private void Update()
+    {
+        if(highlighted)
+        {
+            sr.material.color = Color.cyan;
+        }
+        else
+        {
+            sr.material.color = Color.white;
+
+        }
     }
 }
