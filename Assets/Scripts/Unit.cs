@@ -21,13 +21,13 @@ public class Unit : MonoBehaviour
     public int damage = 100;
     public float range = 1;
     public float speed = 2;
-    public Sprite tempUnitSprite;
     public bool selected = false;
     #endregion
 
     #region Private Variables
     private MapObject mapObject; //parent holding map data
     private FloorTile targetTile;
+    private SpriteRenderer sr;
     Node targetNode;
 
     #endregion
@@ -58,6 +58,11 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region Custom Methods
+    public GameObject ChangeSprite(UnitList unitList)
+    {
+        return unitList.units[0];
+    }
+
     public IEnumerator MoveAlongPath(List<Node> p)
     {
         GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink(); //before anything break the link to the map

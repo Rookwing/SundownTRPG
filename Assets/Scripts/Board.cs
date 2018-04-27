@@ -292,7 +292,7 @@ public class Board : MonoBehaviour
         return grid[posX, posY];
     }
 
-    public List<FloorTile> TilesInRange(FloorTile center, int range, bool includeUnwalkable)
+    public List<FloorTile> TilesInRange(FloorTile center, int range, bool walking)
     {
         List<FloorTile> inRange = new List<FloorTile>();
 
@@ -300,18 +300,18 @@ public class Board : MonoBehaviour
         {
             if (GetDistance(currentTile, center) <= range)
             {
-                if (includeUnwalkable)
-                {
-                    inRange.Add(currentTile);
-                    currentTile.highlighted = true;
-                }
-                else
+                if (!walking)
                 {
                     if (currentTile.IsTraversable())
                     {
                         inRange.Add(currentTile);
                         currentTile.highlighted = true;
                     }
+                }
+                else
+                {
+                    inRange.Add(currentTile);
+                    currentTile.highlighted = true;
                 }
             }
         }

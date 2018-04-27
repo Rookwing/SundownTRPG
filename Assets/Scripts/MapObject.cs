@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class MapObject : MonoBehaviour
 {
-    public SpriteRenderer spriteObject;
+    public Transform spriteParent;
     private Vector2 mapPosition;
     private FloorTile linkedTile;
     private ObjectType type;
+    private UnitList units; //list holding unit sprites/animations
 
     public enum ObjectType
     {
@@ -42,8 +43,11 @@ public class MapObject : MonoBehaviour
     {
         if (type == ObjectType.Unit)
         {
+            units = GetComponent<UnitList>();
             gameObject.name = "Unit MapObject";
-            gameObject.AddComponent<Unit>();
+            Unit unit = gameObject.AddComponent<Unit>();
+            Instantiate(unit.ChangeSprite(units), spriteParent, false);
+
         }
        // else if (type == ObjectType.Building)
            // gameObject.AddComponent<Building>();
