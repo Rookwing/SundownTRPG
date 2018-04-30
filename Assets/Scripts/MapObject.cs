@@ -5,6 +5,7 @@ using UnityEngine;
 public class MapObject : MonoBehaviour
 {
     public Transform spriteParent;
+    public Animator animator;
     private Vector2 mapPosition;
     private FloorTile linkedTile;
     private ObjectType type;
@@ -46,7 +47,7 @@ public class MapObject : MonoBehaviour
             units = GetComponent<UnitList>();
             gameObject.name = "Unit MapObject";
             Unit unit = gameObject.AddComponent<Unit>();
-            Instantiate(unit.ChangeSprite(units), spriteParent, false);
+            animator = Instantiate(unit.ChangeSprite(units), spriteParent, false).GetComponent<Animator>();
 
         }
        // else if (type == ObjectType.Building)

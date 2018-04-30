@@ -27,36 +27,72 @@ public class Board : MonoBehaviour
     private void Start()
     {
 
-        tiles = new FloorTile[(int)GameManager._gm.MapSize().x, (int)GameManager._gm.MapSize().y];
+        tiles = new FloorTile[(int)GameManager._gm.MapSize().x, (int)GameManager._gm.MapSize().y]; //initialize floormap size based on _gm setting
     }
 
-    /// <summary>
-    /// Returns the tile at (x,y) on the grid of the map
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
-    public FloorTile GetTileAt(int x, int y)
+    private void OnDrawGizmos()
     {
-        return tiles[x, y];
+        if (!Application.isPlaying) return; //stops errors
+        if (GameManager._gm.groundGroup != null)
+        {
+            Gizmos.DrawWireCube( //big old bounding cube
+                GameManager._gm.groundGroup.transform.position + groundOffset,
+                new Vector3(
+                    GameManager._gm.MapSize().x, 1, GameManager._gm.MapSize().y
+                    ));
+            if (drawGizmos) //bool to turn it off in the inspector
+            {
+
+                if (grid != null) //errorgate
+                {
+                    foreach (Node n in grid)
+                    {
+                        Gizmos.color = (n.walkable) ? Color.white : Color.red; // white if walkable, red if not
+                        if (path != null) //if the pathfinding class has passed a path to the board
+                        {
+                            if (path.Contains(n)) //if in  said path paint it black
+                                Gizmos.color = Color.black;
+                        }
+                        Gizmos.DrawCube(n.worldPosition, Vector3.one * .1f); //nice little squares
+                    }
+                }
+            }
+        }
     }
-    /// <summary>
-    /// Takes a Vector3, meant to take the selection square position. Uses the x for the x and the z for the y 
-    /// </summary>
-    /// <param name="v3">Selection square position</param>
-    /// <returns></returns>
-    public FloorTile GetTileAt(Vector3 v3)
+
+    #region Pathfinding Board Methods
+    public List<Node> GetNeighbors(Node node)
     {
-        return tiles[Mathf.RoundToInt(v3.x), Mathf.RoundToInt(v3.z)];
+        List<Node> neighbors = new List<Node>();
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == -1 && y == -1 || x == 0 && y == 0 || x == -1 && y == 1 || x == 1 && y == 1 || x == 1 && y == -1)
+                    continue;
+
+                int checkX = node.gridX + x;
+                int checkY = node.gridY + y;
+
+                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
+                    neighbors.Add(grid[checkX, checkY]);
+            }
+        }
+
+        return neighbors;
     }
-    /// <summary>
-    /// Takes a Vector2, meant to take the mapPosition
-    /// </summary>
-    /// <param name="v3">map position</param>
-    /// <returns></returns>
-    public FloorTile GetTileAt(Vector2 v2)
+
+    public Node NodeFromWorldPoint(Vector3 worldPosition)
     {
-        return tiles[Mathf.RoundToInt(v2.x), Mathf.RoundToInt(v2.y)];
+        float percentX = (worldPosition.x) / GameManager._gm.MapSize().x;
+        float percentY = (worldPosition.z) / GameManager._gm.MapSize().y;
+        percentX = Mathf.Clamp01(percentX);
+        percentY = Mathf.Clamp01(percentY);
+
+        int x = Mathf.FloorToInt((gridSizeX) * percentX);
+        int y = Mathf.FloorToInt((gridSizeY) * percentY);
+        return grid[x, y];
     }
 
     void CreateGrid()
@@ -84,6 +120,13 @@ public class Board : MonoBehaviour
         }
     }
 
+    public Node GetNode(int posX, int posY)
+    {
+        return grid[posX, posY];
+    }
+    #endregion
+
+    #region TileMap Methods
     public void LinkToMap(int x, int y, MapObject mapObject)
     {
         tiles[x, y].LinkObject(mapObject);
@@ -219,79 +262,6 @@ public class Board : MonoBehaviour
         CreateGrid();
     }
 
-    public List<Node> GetNeighbors(Node node)
-    {
-        List<Node> neighbors = new List<Node>();
-
-        for (int x = -1; x <= 1; x++)
-        {
-            for (int y = -1; y <= 1; y++)
-            {
-                if (x == -1 && y == -1 || x == 0 && y == 0 || x == -1 && y == 1 || x == 1 && y == 1 || x == 1 && y == -1)
-                    continue;
-
-                int checkX = node.gridX + x;
-                int checkY = node.gridY + y;
-
-                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
-                    neighbors.Add(grid[checkX, checkY]);
-            }
-        }
-
-        return neighbors;
-    }
-
-    public Node NodeFromWorldPoint(Vector3 worldPosition)
-    {
-        float percentX = (worldPosition.x) / GameManager._gm.MapSize().x;
-        float percentY = (worldPosition.z) / GameManager._gm.MapSize().y;
-        percentX = Mathf.Clamp01(percentX);
-        percentY = Mathf.Clamp01(percentY);
-
-        int x = Mathf.FloorToInt((gridSizeX) * percentX);
-        int y = Mathf.FloorToInt((gridSizeY) * percentY);
-        return grid[x, y];
-    }
-
-
-
-    private void OnDrawGizmos()
-    {
-        if (!Application.isPlaying) return;
-        if (GameManager._gm.groundGroup != null)
-        {
-            //print(GameManager._gm.groundGroup);
-            Gizmos.DrawWireCube(
-                GameManager._gm.groundGroup.transform.position + groundOffset,
-                new Vector3(
-                    GameManager._gm.MapSize().x, 1, GameManager._gm.MapSize().y
-                    ));
-            if (drawGizmos)
-            {
-
-                if (grid != null)
-                {
-                    foreach (Node n in grid)
-                    {
-                        Gizmos.color = (n.walkable) ? Color.white : Color.red;
-                        if (path != null)
-                        {
-                            if (path.Contains(n))
-                                Gizmos.color = Color.black;
-                        }
-                        //Gizmos.DrawCube(n.worldPosition + nodecubeOffset, Vector3.one * (nodeDiameter - .1f));
-                        Gizmos.DrawCube(n.worldPosition, Vector3.one * .1f);
-                    }
-                }
-            }
-        }
-    }
-
-    public Node GetNode(int posX, int posY)
-    {
-        return grid[posX, posY];
-    }
-
     public List<FloorTile> TilesInRange(FloorTile center, int range, bool walking)
     {
         List<FloorTile> inRange = new List<FloorTile>();
@@ -300,9 +270,9 @@ public class Board : MonoBehaviour
         {
             if (GetDistance(currentTile, center) <= range)
             {
-                if (!walking)
+                if (walking)
                 {
-                    if (currentTile.IsTraversable())
+                    if (GameManager._gm._pathing.PathLength(center.transform.position, currentTile.transform.position) <= range)
                     {
                         inRange.Add(currentTile);
                         currentTile.highlighted = true;
@@ -310,8 +280,11 @@ public class Board : MonoBehaviour
                 }
                 else
                 {
-                    inRange.Add(currentTile);
-                    currentTile.highlighted = true;
+                    if (currentTile.IsTraversable())
+                    {
+                        inRange.Add(currentTile);
+                        currentTile.highlighted = true;
+                    }
                 }
             }
         }
@@ -340,5 +313,38 @@ public class Board : MonoBehaviour
 
         return dist;
     }
+
+    #region GetTileAt Overload Methods
+    /// <summary>
+    /// Returns the tile at (x,y) on the grid of the map
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public FloorTile GetTileAt(int x, int y)
+    {
+        return tiles[x, y];
+    }
+    /// <summary>
+    /// Takes a Vector3, meant to take the selection square position. Uses the x for the x and the z for the y 
+    /// </summary>
+    /// <param name="v3">Selection square position</param>
+    /// <returns></returns>
+    public FloorTile GetTileAt(Vector3 v3)
+    {
+        return tiles[Mathf.RoundToInt(v3.x), Mathf.RoundToInt(v3.z)];
+    }
+    /// <summary>
+    /// Takes a Vector2, meant to take the mapPosition
+    /// </summary>
+    /// <param name="v3">map position</param>
+    /// <returns></returns>
+    public FloorTile GetTileAt(Vector2 v2)
+    {
+        return tiles[Mathf.RoundToInt(v2.x), Mathf.RoundToInt(v2.y)];
+    }
+    #endregion
+
+    #endregion
 
 }

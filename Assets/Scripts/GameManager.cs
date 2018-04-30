@@ -259,7 +259,7 @@ public class GameManager : MonoBehaviour
                 else //if no object is present
                 {
                     DevPanelVisible(true); //show the dev spawn menu //TODO: implement a dev mode bool
-                    print("no object to lock");
+                    //print("no object to lock");
                 }
             }
             else //command mode active
@@ -342,7 +342,7 @@ public class GameManager : MonoBehaviour
         commandMode = true;//activate command mode, but not attacking
         attacking = false;
         _pathing.seeker = objectToMove.transform; //set the current object to be the seeker
-        selectable = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), (int)unit.speed, false);
+        selectable = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), (int)unit.speed, true);
 
         SelectionLock(false); //now that object is saved, unlock selection //NOTE: might want to make the old object remain the focus for later?
 

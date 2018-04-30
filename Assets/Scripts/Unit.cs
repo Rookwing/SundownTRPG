@@ -17,18 +17,16 @@ public class Unit : MonoBehaviour
 {
 
     #region Public Variables
-    public int health = 100;
-    public int damage = 100;
+    public int power = 5;
+    public int damage = 1;
     public float range = 1;
-    public float speed = 2;
+    public float speed = 5;
     public bool selected = false;
     #endregion
 
     #region Private Variables
     private MapObject mapObject; //parent holding map data
-    private FloorTile targetTile;
-    private SpriteRenderer sr;
-    Node targetNode;
+    private Node targetNode;
 
     #endregion
 
@@ -44,7 +42,7 @@ public class Unit : MonoBehaviour
     }
     private void Update()
     {
-        if (health <= 0)
+        if (power <= 0)
         {
             Death();
         }
@@ -60,7 +58,7 @@ public class Unit : MonoBehaviour
     #region Custom Methods
     public GameObject ChangeSprite(UnitList unitList)
     {
-        return unitList.units[0];
+        return unitList.units[Random.Range(0, unitList.units.Length)];
     }
 
     public IEnumerator MoveAlongPath(List<Node> p)
@@ -68,7 +66,7 @@ public class Unit : MonoBehaviour
         GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink(); //before anything break the link to the map
 
         bool pathComplete = false;
-
+        mapObject.animator.SetBool("walking", true);
         while (!pathComplete)
         {
             for (int i = 0; i < p.Count; i++) //every Node in the list
@@ -81,10 +79,9 @@ public class Unit : MonoBehaviour
                 bool reachedPoint = false;
                 while (!reachedPoint)//start looping the coroutine (save unity scene/project before testing anything, assets are safe.)
                 {
-                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed * .1f));  //smoothly transition to the next node. the float in the Lerp is the speed.
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, .2f));  //smoothly transition to the next node. the float in the Lerp is the speed.
                     if (Vector3.Distance(transform.position, targetPosition) < .1f)//if weve made it
                     {
-                        transform.position = targetPosition;
                         reachedPoint = true;//stop looping
 
                         mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z);//update our mapobject
@@ -93,8 +90,11 @@ public class Unit : MonoBehaviour
                 }
                 yield return null;
             }
+            transform.position = new Vector3(p[p.Count-1].gridX, transform.position.y, p[p.Count-1].gridY);
 
             pathComplete = true;
+            mapObject.animator.SetBool("walking", false);
+
             GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);//and link it
         }
     }
@@ -116,7 +116,7 @@ public class Unit : MonoBehaviour
                 bool reachedPoint = false;
                 while (!reachedPoint)
                 {
-                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, speed * .1f));
+                    transform.position = Vector3.Lerp(transform.position, targetPosition, Mathf.Lerp(0, 1, .2f));
                     if (Vector3.Distance(transform.position, targetPosition) < .1f)
                     {
                         reachedPoint = true;
