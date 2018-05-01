@@ -62,7 +62,6 @@ public class SelectionSquare : MonoBehaviour
             {
                 oldPos = transform.position;
                 hovering = false;
-
             }
             transform.position = Vector3.Lerp(oldPos, GameManager._gm.selectPosition, Mathf.Lerp(0,1,1));
         }

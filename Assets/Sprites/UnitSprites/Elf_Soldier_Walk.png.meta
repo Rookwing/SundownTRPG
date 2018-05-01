@@ -12,6 +12,7 @@ TextureImporter:
     21300010: Elf_Soldier_Walk_5
     21300012: Elf_Soldier_Walk_6
     21300014: Elf_Soldier_Walk_7
+    21300016: Elf_Soldier_Walk_8
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -51,8 +52,8 @@ TextureImporter:
   spriteMode: 2
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 7
+  spritePivot: {x: 0.5, y: 0}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -92,10 +93,10 @@ TextureImporter:
       name: Elf_Soldier_Walk_0
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 448
-        width: 44
-        height: 61
+        width: 64
+        height: 64
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -106,12 +107,12 @@ TextureImporter:
       name: Elf_Soldier_Walk_1
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 384
-        width: 44
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -120,12 +121,12 @@ TextureImporter:
       name: Elf_Soldier_Walk_2
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 320
-        width: 44
-        height: 59
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -134,12 +135,12 @@ TextureImporter:
       name: Elf_Soldier_Walk_3
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 256
-        width: 44
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -148,12 +149,12 @@ TextureImporter:
       name: Elf_Soldier_Walk_4
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 192
-        width: 44
-        height: 61
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -162,12 +163,12 @@ TextureImporter:
       name: Elf_Soldier_Walk_5
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 128
-        width: 44
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -176,12 +177,12 @@ TextureImporter:
       name: Elf_Soldier_Walk_6
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 64
-        width: 44
-        height: 59
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -190,12 +191,12 @@ TextureImporter:
       name: Elf_Soldier_Walk_7
       rect:
         serializedVersion: 2
-        x: 14
+        x: 0
         y: 0
-        width: 44
-        height: 60
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+        width: 64
+        height: 64
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []

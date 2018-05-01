@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-
+    [Range(1, 5)]
     public float scrollSpeed;
     public int scrollDist;
 
     public int maxX, maxY;
 
+    private Vector3 cameraOffset;
+
     private void Start()
     {
+        cameraOffset = GameManager._gm.groundGroup.transform.position - transform.position;
         maxX = (int)(GameManager._gm.MapSize().x);
         maxY = (int)(GameManager._gm.MapSize().y);
+        scrollSpeed = scrollSpeed * 2;
     }
 
     private void Update()
@@ -22,30 +26,16 @@ public class CameraMovement : MonoBehaviour
         {
             var mousePosX = Input.mousePosition.x;
             var mousePosY = Input.mousePosition.y;
-            var posX = transform.position.x;
-            var posY = transform.position.z;
 
-            if (posX < maxX && posX > -maxX && posY < maxY && posY > -maxY)
-            {
-                if (mousePosX < scrollDist)
-                    MoveCamera(Vector3.left * scrollSpeed * Time.deltaTime);
-                if (mousePosX >= Screen.width - scrollDist)
-                    MoveCamera(Vector3.right * scrollSpeed * Time.deltaTime);
+            if (mousePosX < scrollDist)
+                MoveCamera(Vector3.left * scrollSpeed * Time.deltaTime);
+            if (mousePosX >= Screen.width - scrollDist)
+                MoveCamera(Vector3.right * scrollSpeed * Time.deltaTime);
 
-                if (mousePosY < scrollDist)
-                    MoveCamera(Vector3.back * scrollSpeed * Time.deltaTime);
-                if (mousePosY >= Screen.height - scrollDist)
-                    MoveCamera(Vector3.forward * scrollSpeed * Time.deltaTime);
-            }
-
-            if (posX > maxX)
-                MoveCamera(Vector3.left * .5f * Time.deltaTime);
-            if (posX < -maxX)
-                MoveCamera(Vector3.right * .5f * Time.deltaTime);
-            if (posY > maxY)
-                MoveCamera(Vector3.back * 1.5f * Time.deltaTime);
-            if (posY < -maxY)
-                MoveCamera(Vector3.forward * 1.5f * Time.deltaTime);
+            if (mousePosY < scrollDist)
+                MoveCamera(Vector3.back * scrollSpeed * Time.deltaTime);
+            if (mousePosY >= Screen.height - scrollDist)
+                MoveCamera(Vector3.forward * scrollSpeed * Time.deltaTime);
         }
     }
 
@@ -54,6 +44,33 @@ public class CameraMovement : MonoBehaviour
     //works exactly the same as calling transform.Translate but says move camera for readability
     public void MoveCamera(Vector3 v3)
     {
-        transform.Translate(v3 * 1.5f * Time.deltaTime, Space.World);
+        Vector3 finalv3 = Vector3.zero;
+        float posX = transform.position.x;
+        float posY = transform.position.z;
+
+        if (v3.x > 0 && posX < maxX)
+        {
+            finalv3.x = v3.x;
+        }
+        if (v3.z > 0 && posY < maxY)
+        {
+            finalv3.z = v3.z;
+        }
+
+        if (v3.x < 0 && posX > 0)
+        {
+            finalv3.x = v3.x;
+        }
+        if (v3.z < 0 && posY > 0)
+        {
+            finalv3.z = v3.z;
+        }
+
+        transform.Translate(finalv3, Space.World);
+    }
+
+    public void CenterCamera(Vector3 v3)
+    {
+        transform.position = v3 + cameraOffset;
     }
 }

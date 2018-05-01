@@ -296,6 +296,7 @@ GameObject:
   - component: {fileID: 222492038572859592}
   - component: {fileID: 114435493052744982}
   - component: {fileID: 114414308190739098}
+  - component: {fileID: 95454677555317414}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -525,6 +526,23 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1908743364555258}
   m_Enabled: 1
+--- !u!95 &95454677555317414
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1621386685897012}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &114013419420241570
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -666,11 +684,22 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114013419420241570}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114249551240827744}
+        m_MethodName: AttackCommand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114208159429088788
@@ -754,7 +783,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: d9f335a826b5e4445b7d008a8b4bb25c, type: 3}
-    m_FontSize: 14
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -852,11 +881,22 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114435493052744982}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114249551240827744}
+        m_MethodName: MoveCommand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114435493052744982
@@ -1081,7 +1121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc027bc940d9c7c43aa9054b10327343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scrollSpeed: 100
+  scrollSpeed: 1
   scrollDist: 100
   maxX: 0
   maxY: 0
@@ -1195,6 +1235,9 @@ MonoBehaviour:
   gridSizeX: 0
   gridSizeY: 0
   nodeRadius: 0.5
+  mountainPrefab: {fileID: 1790701796774060, guid: 0fcdc4270d7f79740b5edefec7f90293,
+    type: 2}
+  treePrefab: {fileID: 1905582357032092, guid: d3da3cdd9defe2b43905ba8cb9d824e7, type: 2}
   baseFloorPrefab: {fileID: 1232241717606484, guid: 3421c75a912935047becea1d51b4e7cd,
     type: 2}
   drawGizmos: 1
@@ -1722,7 +1765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 14.5, y: -22.442806}
+  m_AnchoredPosition: {x: 21.099976, y: -22.442806}
   m_SizeDelta: {x: 239.75, y: 44.949997}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224059490494284766
@@ -1799,7 +1842,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 14.5, y: 28.5}
+  m_AnchoredPosition: {x: 21.099998, y: 28.5}
   m_SizeDelta: {x: 239.75, y: 43.949997}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224131079819283808
@@ -1855,10 +1898,10 @@ RectTransform:
   m_Father: {fileID: 224352142469743054}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -775.00024, y: 375}
-  m_SizeDelta: {x: -1650, y: -850}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 172, y: -143}
+  m_SizeDelta: {x: 280.36, y: 230}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224302238099433186
 RectTransform:
@@ -2045,7 +2088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 14.5, y: -74.34184}
+  m_AnchoredPosition: {x: 21.099976, y: -74.34184}
   m_SizeDelta: {x: 239.75, y: 44.949997}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224839589281481542

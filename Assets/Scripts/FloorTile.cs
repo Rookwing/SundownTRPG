@@ -11,6 +11,9 @@ public class FloorTile : MonoBehaviour
     private FloorType type;
     private SpriteRenderer sr;
 
+    public int x, y;
+    public bool highlighted = false;
+
     public Sprite grassTexture;
     public Sprite rockTexture;
     public Sprite dirtTexture;
@@ -25,6 +28,8 @@ public class FloorTile : MonoBehaviour
     }
     public void Initialize(FloorType floorType)
     {
+        x = (int)transform.position.x;
+        y = (int)transform.position.z;
         linked = false;
         sr = gameObject.GetComponent<SpriteRenderer>();
         sr.color = Color.white;
@@ -78,13 +83,24 @@ public class FloorTile : MonoBehaviour
     public void LinkObject(MapObject mapObject)
     {
         linkedObject = mapObject;
+        linkedObject.MapPosition((int)transform.position.x, (int)transform.position.z);
+        SetTraversable(false);
         linked = true;
+       // print("linked " + linkedObject.gameObject);
     }
 
     public void BreakLink()
     {
+       // print("break link " + linkedObject.gameObject);
+        GameManager._gm._board.GetTileAt(linkedObject.MapPosition()).SetTraversable(true);
         linkedObject = null;
         linked = false;
+    }
+    public void SetTraversable(bool b)
+    {
+        print(linkedObject.MapPosition());
+        traversable = b;
+        GameManager._gm._board.GetNode((int)linkedObject.MapPosition().x, (int)linkedObject.MapPosition().y).walkable = b;
     }
     public bool IsTraversable()
     {
@@ -111,5 +127,18 @@ public class FloorTile : MonoBehaviour
                 "\nType: " + type.ToString();
         }
         return s;
+    }
+
+    private void Update()
+    {
+        if(highlighted)
+        {
+            sr.material.color = Color.cyan;
+        }
+        else
+        {
+            sr.material.color = Color.white;
+
+        }
     }
 }

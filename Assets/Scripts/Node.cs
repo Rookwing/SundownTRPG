@@ -6,6 +6,7 @@ public class Node {
 
     public bool walkable;
     public Vector3 worldPosition;
+    public Vector2 gridPosition;
     public int gridX, gridY;
 
     public int gCost;
@@ -18,6 +19,7 @@ public class Node {
         worldPosition = _worldPos;
         gridX = _gridX;
         gridY = _gridY;
+        gridPosition = new Vector2(gridX, gridY);
     }
 
     public int fCost
