@@ -132,6 +132,8 @@ public class Board : MonoBehaviour
     public void LinkToMap(int x, int y, MapObject mapObject)
     {
         tiles[x, y].LinkObject(mapObject);
+        mapObject.MapPosition(x, y);
+        tiles[x, y].SetTraversable(false);
     }
 
     public void CreateMap(Vector2 mapSize)
