@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     #region Private Variables
     [SerializeField] private GameObject mapObjectPrefab; //set in inspector, but no one needs to access it otherwise.
+    
     [SerializeField] private Vector2 mapSize; //holds the size of the map for reference by the board and others. this is the master setting as such it is private but accessed by methods.
     [SerializeField] private SelectionSquare selectionSquare;
     [SerializeField] private Text selectionText; //can change the infobox's text with the methods below
@@ -38,6 +39,8 @@ public class GameManager : MonoBehaviour
     private bool commandMode = false; //TODO: turn commandMode into an enum for attacking/moving/selecting/etc
     private bool attacking = false;
     private List<FloorTile> selectable;
+    private Unit.Race player1Race = Unit.Race.Human;
+    private Unit.Race player2Race = Unit.Race.Undead;
     #endregion
 
 
@@ -49,6 +52,15 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if(Random.Range(0,2) == 0)
+        {
+            player1Race = Unit.Race.Human;
+        }
+        else
+        {
+            player1Race = Unit.Race.Elf;
+        }
+
         _board = GetComponent<Board>();
         _pathing = GetComponent<Pathfinding>();
 
@@ -59,6 +71,19 @@ public class GameManager : MonoBehaviour
         DevPanelVisible(false);
         CommandPanelVisible(false);
 
+        SpawnMapObjectAt(0, 0, player1Race, Unit.UnitType.Archer);
+        SpawnMapObjectAt(0, 1, player1Race, Unit.UnitType.Archer);
+        SpawnMapObjectAt(0, 2, player1Race, Unit.UnitType.Tank);
+        SpawnMapObjectAt(1, 0, player1Race, Unit.UnitType.Soldier);
+        SpawnMapObjectAt(1, 1, player1Race, Unit.UnitType.Soldier);
+        SpawnMapObjectAt(1, 2, player1Race, Unit.UnitType.Tank);
+
+        SpawnMapObjectAt((int)mapSize.x-1, (int)mapSize.y-1, player2Race, Unit.UnitType.Archer);
+        SpawnMapObjectAt((int)mapSize.x-1, (int)mapSize.y-2, player2Race, Unit.UnitType.Archer);
+        SpawnMapObjectAt((int)mapSize.x-1, (int)mapSize.y-3, player2Race, Unit.UnitType.Tank);
+        SpawnMapObjectAt((int)mapSize.x-2, (int)mapSize.y-1, player2Race, Unit.UnitType.Soldier);
+        SpawnMapObjectAt((int)mapSize.x-2, (int)mapSize.y-2, player2Race, Unit.UnitType.Soldier);
+        SpawnMapObjectAt((int)mapSize.x-2, (int)mapSize.y-3, player2Race, Unit.UnitType.Tank);
     }
 
     private void Update()
@@ -88,6 +113,24 @@ public class GameManager : MonoBehaviour
         _board.LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
         return mapObject;
     }
+    public MapObject SpawnMapObjectAtSelection(Unit.Race race, Unit.UnitType unitType) //for use in code.
+    {
+        MapObject mapObject;
+        mapObject = Instantiate(mapObjectPrefab).GetComponent<MapObject>();
+        mapObject.transform.position = selectPosition;
+        mapObject.Initialize(MapObject.ObjectType.Unit, (int)selectPosition.x, (int)selectPosition.z, race, unitType);
+        _board.LinkToMap((int)selectPosition.x, (int)selectPosition.z, mapObject);
+        return mapObject;
+    }
+    public MapObject SpawnMapObjectAt(int x, int y, Unit.Race race, Unit.UnitType unitType) //for use in code.
+    {
+        MapObject mapObject;
+        mapObject = Instantiate(mapObjectPrefab).GetComponent<MapObject>();
+        mapObject.transform.position = new Vector3(x, mapObject.transform.position.y, y);
+        mapObject.Initialize(MapObject.ObjectType.Unit, x, y, race, unitType);
+        _board.LinkToMap(x, y, mapObject);
+        return mapObject;
+    }
 
     public void SpawnMapObjectAtSelectionButton(string type) //for use with unity scene buttons, you cant pass enum types through so we use a string or similar instead.
     {
@@ -103,7 +146,7 @@ public class GameManager : MonoBehaviour
 
             if (type == "unit")
             {
-                mapObject.Initialize(MapObject.ObjectType.Unit, (int)selectPosition.x, (int)selectPosition.z);
+                mapObject.Initialize(MapObject.ObjectType.Unit, (int)selectPosition.x, (int)selectPosition.z, player1Race, (Unit.UnitType)Random.Range(0, 3));
             }
             else if (type == "building")
             {

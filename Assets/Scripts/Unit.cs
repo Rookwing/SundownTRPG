@@ -17,11 +17,16 @@ public class Unit : MonoBehaviour
 {
 
     #region Public Variables
-    public int power = 5;
+    public int power = 1;
     public int damage = 1;
     public float range = 1;
     public float speed = 5;
     public bool selected = false;
+
+    [HideInInspector]
+    public UnitType unitType;
+    [HideInInspector]
+    public Race race;
     #endregion
 
     #region Private Variables
@@ -32,7 +37,19 @@ public class Unit : MonoBehaviour
 
 
     #region Enumerations
+    public enum UnitType
+    {
+        Archer,
+        Soldier,
+        Tank
+    }
 
+    public enum Race
+    {
+        Elf = 0,
+        Human = 3,
+        Undead = 6
+    }
     #endregion
 
     #region Unity Methods
@@ -50,6 +67,7 @@ public class Unit : MonoBehaviour
 
     private void Death()
     {
+        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink();
         Destroy(gameObject); //TODO: properly dispose of Units for garbage?
     }
 
@@ -58,7 +76,7 @@ public class Unit : MonoBehaviour
     #region Custom Methods
     public GameObject ChangeSprite(UnitList unitList)
     {
-        return unitList.units[Random.Range(0, unitList.units.Length)];
+        return unitList.units[(int)race + (int)unitType];
     }
 
     public IEnumerator MoveAlongPath(List<Node> p)
@@ -90,13 +108,13 @@ public class Unit : MonoBehaviour
                 }
                 yield return null;
             }
-            transform.position = new Vector3(p[p.Count-1].gridX, transform.position.y, p[p.Count-1].gridY);
+            transform.position = new Vector3(p[p.Count - 1].gridX, transform.position.y, p[p.Count - 1].gridY);
 
             pathComplete = true;
             mapObject.animator.SetBool("walking", false);
 
-            GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);//and link it
         }
+        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);//and link it
     }
 
     //this is the same as MoveAlongPath but with differences Commented
@@ -105,9 +123,10 @@ public class Unit : MonoBehaviour
         GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink();
 
         bool pathComplete = false;
+        mapObject.animator.SetBool("walking", true);
         while (!pathComplete)
         {
-            for (int i = 0; i < p.Count - 1; i++)//p.Count-1 stops just before the target location, in this case it stops us from occupying the same space as the target.
+            for (int i = 0; i < p.Count - 1; i++)//i < p.Count-1 stops just before the target location, in this case it stops us from occupying the same space as the target.
             {
 
                 targetNode = p[i];
@@ -136,10 +155,15 @@ public class Unit : MonoBehaviour
                 }
                 yield return null;
             }
-
+            if (p.Count >= 2)
+            {
+                transform.position = new Vector3(p[p.Count - 2].gridX, transform.position.y, p[p.Count - 2].gridY);
+            }
             pathComplete = true;
-            GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject); //link final location
+            mapObject.animator.SetBool("walking", false);
+
         }
+        GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject); //link final location
     }
 
     bool Attack(Vector2 targetMapPosition)
@@ -150,7 +174,24 @@ public class Unit : MonoBehaviour
         {
             if (targetTile.GetLinkedObject().GetMapObjectType() == MapObject.ObjectType.Unit)
             {
-                targetTile.GetLinkedObject().GetComponent<Unit>().Damage();
+                for (int i = 0; i < power; i++)
+                {
+                    if (Random.value > .5f)
+                    {
+                        targetTile.GetLinkedObject().GetComponent<Unit>().Damage(damage);
+                    }
+                }
+
+                if (targetTile.HasLinkedObject()) //if target dies, it will be destroyed and break link.
+                {
+                    for (int i = 0; i < targetTile.GetLinkedObject().GetComponent<Unit>().power; i++)
+                    {
+                        if (Random.value > .5f)
+                        {
+                            targetTile.GetLinkedObject().GetComponent<Unit>().Damage(damage);
+                        }
+                    }
+                }
             }
             return true;
         }
@@ -161,9 +202,9 @@ public class Unit : MonoBehaviour
         }
     }
 
-    void Damage()
+    public void Damage(int amount)
     {
-
+        power -= amount;
     }
 
     #endregion

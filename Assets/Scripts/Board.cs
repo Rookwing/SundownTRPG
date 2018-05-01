@@ -13,6 +13,8 @@ public class Board : MonoBehaviour
     public int gridSizeX, gridSizeY;
     public float nodeRadius;
 
+    [SerializeField] private GameObject mountainPrefab; //set in inspector, but no one needs to access it otherwise.
+    [SerializeField] private GameObject treePrefab; //set in inspector, but no one needs to access it otherwise.
     [SerializeField]
     private GameObject baseFloorPrefab;
     private float nodeDiameter;
@@ -259,6 +261,41 @@ public class Board : MonoBehaviour
                 #endregion
             }
         }
+
+        tiles[0, 0].Initialize(FloorTile.FloorType.Grass);
+        tiles[0, 1].Initialize(FloorTile.FloorType.Grass);
+        tiles[0, 2].Initialize(FloorTile.FloorType.Grass);
+        tiles[1, 0].Initialize(FloorTile.FloorType.Grass);
+        tiles[1, 1].Initialize(FloorTile.FloorType.Grass);
+        tiles[1, 2].Initialize(FloorTile.FloorType.Grass);
+
+        tiles[(int)mapSize.x-1, (int)mapSize.y-1].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x-1, (int)mapSize.y-2].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x-1, (int)mapSize.y-3].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x-2, (int)mapSize.y-1].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x-2, (int)mapSize.y-2].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x-2, (int)mapSize.y-3].Initialize(FloorTile.FloorType.Grass);
+
+        //third pass
+        for (int i = 0; i < mapSize.x; i++)
+        {
+            for (int j = 0; j < mapSize.y; j++)
+            {
+                if (tiles[i, j].GetFloorType() == FloorTile.FloorType.Mountain)
+                {
+                    temp = Instantiate(mountainPrefab, tiles[i, j].transform);
+                    temp.transform.Rotate(Vector3.up, 90 * (int)Random.Range(0, 4));
+                }
+
+                if (tiles[i, j].GetFloorType() == FloorTile.FloorType.Forest)
+                {
+                    temp = Instantiate(treePrefab, tiles[i, j].transform);
+                    temp.transform.Rotate(Vector3.up, 90 * (int)Random.Range(0, 4));
+                }
+
+            }
+        }
+
         CreateGrid();
     }
 
