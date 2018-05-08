@@ -17,7 +17,7 @@ public class Unit : MonoBehaviour
 {
 
     #region Public Variables
-    public int power = 1;
+    public int power = 3;
     public int damage = 1;
     public float range = 1;
     public float speed = 5;
@@ -189,6 +189,18 @@ public class Unit : MonoBehaviour
                         if (Random.value > .5f)
                         {
                             targetTile.GetLinkedObject().GetComponent<Unit>().Damage(damage);
+                            if (targetTile.HasLinkedObject())
+                            {
+                                print(targetTile.GetLinkedObject().ToString() + " hit by " + mapObject.ToString());
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            print(mapObject.ToString()  + " missed");
                         }
                     }
                 }
