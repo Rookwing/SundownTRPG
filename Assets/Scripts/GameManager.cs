@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     #region Private Variables
     [SerializeField] private GameObject mapObjectPrefab; //set in inspector, but no one needs to access it otherwise.
-    
+
     [SerializeField] private Vector2 mapSize; //holds the size of the map for reference by the board and others. this is the master setting as such it is private but accessed by methods.
     [SerializeField] private SelectionSquare selectionSquare;
     [SerializeField] private Text selectionText; //can change the infobox's text with the methods below
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if(Random.Range(0,2) == 0)
+        if (Random.Range(0, 2) == 0)
         {
             player1Race = Unit.Race.Human;
         }
@@ -79,12 +79,12 @@ public class GameManager : MonoBehaviour
         SpawnMapObjectAt(1, 1, player1Race, Unit.UnitType.Soldier);
         SpawnMapObjectAt(1, 2, player1Race, Unit.UnitType.Tank);
 
-        SpawnMapObjectAt((int)mapSize.x-1, (int)mapSize.y-1, player2Race, Unit.UnitType.Archer);
-        SpawnMapObjectAt((int)mapSize.x-1, (int)mapSize.y-2, player2Race, Unit.UnitType.Archer);
-        SpawnMapObjectAt((int)mapSize.x-1, (int)mapSize.y-3, player2Race, Unit.UnitType.Tank);
-        SpawnMapObjectAt((int)mapSize.x-2, (int)mapSize.y-1, player2Race, Unit.UnitType.Soldier);
-        SpawnMapObjectAt((int)mapSize.x-2, (int)mapSize.y-2, player2Race, Unit.UnitType.Soldier);
-        SpawnMapObjectAt((int)mapSize.x-2, (int)mapSize.y-3, player2Race, Unit.UnitType.Tank);
+        SpawnMapObjectAt((int)mapSize.x - 1, (int)mapSize.y - 1, player2Race, Unit.UnitType.Archer);
+        SpawnMapObjectAt((int)mapSize.x - 1, (int)mapSize.y - 2, player2Race, Unit.UnitType.Archer);
+        SpawnMapObjectAt((int)mapSize.x - 1, (int)mapSize.y - 3, player2Race, Unit.UnitType.Tank);
+        SpawnMapObjectAt((int)mapSize.x - 2, (int)mapSize.y - 1, player2Race, Unit.UnitType.Soldier);
+        SpawnMapObjectAt((int)mapSize.x - 2, (int)mapSize.y - 2, player2Race, Unit.UnitType.Soldier);
+        SpawnMapObjectAt((int)mapSize.x - 2, (int)mapSize.y - 3, player2Race, Unit.UnitType.Tank);
     }
 
     private void Update()
@@ -393,7 +393,7 @@ public class GameManager : MonoBehaviour
         commandMode = true;//activate command mode, but not attacking
         attacking = false;
         _pathing.seeker = objectToMove.transform; //set the current object to be the seeker
-        selectable = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), (int)unit.speed, true);
+        selectable = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), (int)unit.speed, true, false);
 
         SelectionLock(false); //now that object is saved, unlock selection //NOTE: might want to make the old object remain the focus for later?
 
@@ -438,7 +438,7 @@ public class GameManager : MonoBehaviour
         commandMode = true;
         attacking = true; //sets attacking to true
         _pathing.seeker = objectToMove.transform;
-        selectable = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), (int)unit.speed, true);
+        selectable = _board.TilesInRange(_board.GetTileAt(objectToMove.transform.position), (int)unit.speed, true, true);
 
         SelectionLock(false);
 
@@ -446,19 +446,34 @@ public class GameManager : MonoBehaviour
         {
             if (selectionLocked == true)
             {
-                _pathing.target = _board.GetTileAt(selectPosition).transform;
-                selectionLocked = false;
-                while (_board.path == null)
+                FloorTile selectedTile = _board.GetTileAt(selectPosition);
+
+                if (selectable.Contains(selectedTile))
                 {
-                    //print("no path yet");
+                    foreach (Node n in _board.GetNeighbors(_board.GetNode((int)selectPosition.x, (int)selectPosition.z)))
+                    {
+                        if (n.walkable)
+                        {
+                            _pathing.target = _board.GetTileAt(n.worldPosition).transform;
+                            break;
+                        }
+                    }
+                    selectionLocked = false;
+                    while (_board.path == null)
+                    {
+                        //print("no path yet");
 
-                    yield return null;
+                        yield return null;
+                    }
+                    //print("found path");
+                    StartCoroutine(objectToMove.GetComponent<Unit>().AttackAlongPath(_board.path, selectPosition)); //starts a different unit coroutine for attack and moving. Most of the differences are there.
+                    commandMode = false;
+                    attacking = false;
                 }
-                //print("found path");
-                StartCoroutine(objectToMove.GetComponent<Unit>().AttackAlongPath(_board.path)); //starts a different unit coroutine for attack and moving. Most of the differences are there.
-                commandMode = false;
-                attacking = false;
-
+                else
+                {
+                    selectionLocked = false;
+                }
             }
             yield return null;
         }

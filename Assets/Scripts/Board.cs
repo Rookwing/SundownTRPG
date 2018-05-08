@@ -271,12 +271,12 @@ public class Board : MonoBehaviour
         tiles[1, 1].Initialize(FloorTile.FloorType.Grass);
         tiles[1, 2].Initialize(FloorTile.FloorType.Grass);
 
-        tiles[(int)mapSize.x-1, (int)mapSize.y-1].Initialize(FloorTile.FloorType.Grass);
-        tiles[(int)mapSize.x-1, (int)mapSize.y-2].Initialize(FloorTile.FloorType.Grass);
-        tiles[(int)mapSize.x-1, (int)mapSize.y-3].Initialize(FloorTile.FloorType.Grass);
-        tiles[(int)mapSize.x-2, (int)mapSize.y-1].Initialize(FloorTile.FloorType.Grass);
-        tiles[(int)mapSize.x-2, (int)mapSize.y-2].Initialize(FloorTile.FloorType.Grass);
-        tiles[(int)mapSize.x-2, (int)mapSize.y-3].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x - 1, (int)mapSize.y - 1].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x - 1, (int)mapSize.y - 2].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x - 1, (int)mapSize.y - 3].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x - 2, (int)mapSize.y - 1].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x - 2, (int)mapSize.y - 2].Initialize(FloorTile.FloorType.Grass);
+        tiles[(int)mapSize.x - 2, (int)mapSize.y - 3].Initialize(FloorTile.FloorType.Grass);
 
         //third pass
         for (int i = 0; i < mapSize.x; i++)
@@ -301,28 +301,51 @@ public class Board : MonoBehaviour
         CreateGrid();
     }
 
-    public List<FloorTile> TilesInRange(FloorTile center, int range, bool walking)
+    public List<FloorTile> TilesInRange(FloorTile center, int range, bool walking, bool attacking)
     {
         List<FloorTile> inRange = new List<FloorTile>();
 
-        foreach (FloorTile currentTile in tiles)
+        if (attacking)
         {
-            if (GetDistance(currentTile, center) <= range)
+            foreach (FloorTile currentTile in tiles)
             {
-                if (walking)
+                if (GetDistance(currentTile, center) <= range)
                 {
-                    if (GameManager._gm._pathing.PathLength(center.transform.position, currentTile.transform.position) <= range)
+                    if (currentTile.HasLinkedObject())
                     {
-                        inRange.Add(currentTile);
-                        currentTile.highlighted = true;
+                        foreach (Node n in GetNeighbors(grid[currentTile.x, currentTile.y]))
+                        {
+                            if (n.walkable)
+                            {
+                                inRange.Add(currentTile);
+                                currentTile.highlighted = true;
+                            }
+                        }
                     }
                 }
-                else
+            }
+        }
+        else
+        {
+            foreach (FloorTile currentTile in tiles)
+            {
+                if (GetDistance(currentTile, center) <= range)
                 {
-                    if (currentTile.IsTraversable())
+                    if (walking)
                     {
-                        inRange.Add(currentTile);
-                        currentTile.highlighted = true;
+                        if (GameManager._gm._pathing.PathLength(center.transform.position, currentTile.transform.position) <= range)
+                        {
+                            inRange.Add(currentTile);
+                            currentTile.highlighted = true;
+                        }
+                    }
+                    else
+                    {
+                        if (currentTile.IsTraversable())
+                        {
+                            inRange.Add(currentTile);
+                            currentTile.highlighted = true;
+                        }
                     }
                 }
             }

@@ -75,7 +75,7 @@ public class MapObject : MonoBehaviour
     public override string ToString()
     {
         string s;
-        s = gameObject.name + ", a " + type + " object"; //when objects have types put it here for debugging.
+        s = gameObject.GetComponent<Unit>().ToString(); //when objects have types put it here for debugging.
         return s;
     }
 }

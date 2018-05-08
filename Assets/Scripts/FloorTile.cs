@@ -98,7 +98,7 @@ public class FloorTile : MonoBehaviour
     }
     public void SetTraversable(bool b)
     {
-        print(linkedObject.MapPosition());
+        //print(linkedObject.MapPosition());
         traversable = b;
         GameManager._gm._board.GetNode((int)linkedObject.MapPosition().x, (int)linkedObject.MapPosition().y).walkable = b;
     }

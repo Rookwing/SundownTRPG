@@ -117,8 +117,8 @@ public class Unit : MonoBehaviour
         GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject);//and link it
     }
 
-    //this is the same as MoveAlongPath but with differences Commented
-    public IEnumerator AttackAlongPath(List<Node> p)
+    ///this is the same as MoveAlongPath but the path leads to a spot next to the target, requires a position to attack
+    public IEnumerator AttackAlongPath(List<Node> p, Vector3 selectPosition) //needs the location to attack because the path leads adjacent
     {
         GameManager._gm._board.GetTileAt(mapObject.MapPosition()).BreakLink();
 
@@ -126,7 +126,7 @@ public class Unit : MonoBehaviour
         mapObject.animator.SetBool("walking", true);
         while (!pathComplete)
         {
-            for (int i = 0; i < p.Count - 1; i++)//i < p.Count-1 stops just before the target location, in this case it stops us from occupying the same space as the target.
+            for (int i = 0; i < p.Count; i++)
             {
 
                 targetNode = p[i];
@@ -141,27 +141,24 @@ public class Unit : MonoBehaviour
                         reachedPoint = true;
 
                         mapObject.MapPosition((int)targetPosition.x, (int)targetPosition.z); //update map location
-
-                        if (Attack(p[p.Count - 1].gridPosition)) //check for linked object and if successful attack
-                        {
-
-                        }
-                        else //what to do if we tried to attack nothing
-                        {
-
-                        }
                     }
                     yield return null;
                 }
                 yield return null;
             }
-            if (p.Count >= 2)
-            {
-                transform.position = new Vector3(p[p.Count - 2].gridX, transform.position.y, p[p.Count - 2].gridY);
-            }
+            transform.position = new Vector3(p[p.Count - 1].gridX, transform.position.y, p[p.Count - 1].gridY);
+
             pathComplete = true;
             mapObject.animator.SetBool("walking", false);
 
+            if (Attack(new Vector2(selectPosition.x, selectPosition.z))) //check for linked object and if successful attack (the attacking is part of the if statement, it returns true if there's an object to attack)
+            {
+
+            }
+            else //what to do if we tried to attack nothing
+            {
+
+            }
         }
         GameManager._gm._board.GetTileAt(mapObject.MapPosition()).LinkObject(mapObject); //link final location
     }
@@ -174,37 +171,43 @@ public class Unit : MonoBehaviour
         {
             if (targetTile.GetLinkedObject().GetMapObjectType() == MapObject.ObjectType.Unit)
             {
+                int d = 0, m = 0;
+
                 for (int i = 0; i < power; i++)
                 {
                     if (Random.value > .5f)
                     {
+                        d += damage;
                         targetTile.GetLinkedObject().GetComponent<Unit>().Damage(damage);
                     }
+                    else
+                    {
+                        m++;
+                    }
+
                 }
+                print(d + " damage, " + m + " misses.");
 
                 if (targetTile.HasLinkedObject()) //if target dies, it will be destroyed and break link.
                 {
+                    d = 0;
+                    m = 0;
                     for (int i = 0; i < targetTile.GetLinkedObject().GetComponent<Unit>().power; i++)
                     {
                         if (Random.value > .5f)
                         {
-                            targetTile.GetLinkedObject().GetComponent<Unit>().Damage(damage);
-                            if (targetTile.HasLinkedObject())
-                            {
-                                print(targetTile.GetLinkedObject().ToString() + " hit by " + mapObject.ToString());
-                            }
-                            else
-                            {
-                                break;
-                            }
+                            d += damage;
+                            Damage(damage);
                         }
                         else
                         {
-                            print(mapObject.ToString()  + " missed");
+                            m++;
                         }
                     }
+                    print(d + " damage, " + m + " misses.");
                 }
             }
+            GameManager._gm.Start3DCombat();
             return true;
         }
         else
@@ -219,5 +222,15 @@ public class Unit : MonoBehaviour
         power -= amount;
     }
 
+
+    public override string ToString()
+    {
+        string s;
+        s = unitType + " " + race + " Power: " + power + " Dmg: " + damage;
+        return s;
+    }
+
     #endregion
+
+
 }
