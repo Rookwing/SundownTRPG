@@ -207,7 +207,7 @@ public class Unit : MonoBehaviour
                     print(d + " damage, " + m + " misses.");
                 }
             }
-            GameManager._gm.Start3DCombat();
+            GameManager._gm.StartCoroutine(GameManager._gm.Start3DCombat());
             return true;
         }
         else
