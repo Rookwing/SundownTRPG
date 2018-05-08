@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text selectionText; //can change the infobox's text with the methods below
     [SerializeField] private GameObject devPanelObj;
     [SerializeField] private CommandMenu commandPanel;
+    [SerializeField] private GameObject combatCamera;
 
     private bool commandMode = false; //TODO: turn commandMode into an enum for attacking/moving/selecting/etc
     private bool attacking = false;
@@ -163,6 +164,13 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
+
+    public IEnumerator Start3DCombat()
+    {
+        combatCamera.SetActive(true);
+        yield return new WaitForSeconds(5.0f);
+        combatCamera.SetActive(false);
+    }
 
     private void GetInput()
     {

@@ -1,0 +1,227 @@
+fileFormatVersion: 2
+guid: 4b5c113e218c64f48a206a5542cefe24
+timeCreated: 1525744070
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: back
+    100002: front1
+    100004: pasted__Human_Head
+    100006: pasted__Human_Hips
+    100008: pasted__Human_LeftArm
+    100010: pasted__Human_LeftFoot
+    100012: pasted__Human_LeftForeArm
+    100014: pasted__Human_LeftHand
+    100016: pasted__Human_LeftHandIndex1
+    100018: pasted__Human_LeftHandIndex2
+    100020: pasted__Human_LeftHandIndex3
+    100022: pasted__Human_LeftHandIndex4
+    100024: pasted__Human_LeftHandMiddle1
+    100026: pasted__Human_LeftHandMiddle2
+    100028: pasted__Human_LeftHandMiddle3
+    100030: pasted__Human_LeftHandMiddle4
+    100032: pasted__Human_LeftHandPinky1
+    100034: pasted__Human_LeftHandPinky2
+    100036: pasted__Human_LeftHandPinky3
+    100038: pasted__Human_LeftHandPinky4
+    100040: pasted__Human_LeftHandRing1
+    100042: pasted__Human_LeftHandRing2
+    100044: pasted__Human_LeftHandRing3
+    100046: pasted__Human_LeftHandRing4
+    100048: pasted__Human_LeftHandThumb1
+    100050: pasted__Human_LeftHandThumb2
+    100052: pasted__Human_LeftHandThumb3
+    100054: pasted__Human_LeftHandThumb4
+    100056: pasted__Human_LeftLeg
+    100058: pasted__Human_LeftShoulder
+    100060: pasted__Human_LeftToeBase
+    100062: pasted__Human_LeftUpLeg
+    100064: pasted__Human_Neck
+    100066: pasted__Human_RightArm
+    100068: pasted__Human_RightFoot
+    100070: pasted__Human_RightForeArm
+    100072: pasted__Human_RightHand
+    100074: pasted__Human_RightHandIndex1
+    100076: pasted__Human_RightHandIndex2
+    100078: pasted__Human_RightHandIndex3
+    100080: pasted__Human_RightHandIndex4
+    100082: pasted__Human_RightHandMiddle1
+    100084: pasted__Human_RightHandMiddle2
+    100086: pasted__Human_RightHandMiddle3
+    100088: pasted__Human_RightHandMiddle4
+    100090: pasted__Human_RightHandPinky1
+    100092: pasted__Human_RightHandPinky2
+    100094: pasted__Human_RightHandPinky3
+    100096: pasted__Human_RightHandPinky4
+    100098: pasted__Human_RightHandRing1
+    100100: pasted__Human_RightHandRing2
+    100102: pasted__Human_RightHandRing3
+    100104: pasted__Human_RightHandRing4
+    100106: pasted__Human_RightHandThumb1
+    100108: pasted__Human_RightHandThumb2
+    100110: pasted__Human_RightHandThumb3
+    100112: pasted__Human_RightHandThumb4
+    100114: pasted__Human_RightLeg
+    100116: pasted__Human_RightShoulder
+    100118: pasted__Human_RightToeBase
+    100120: pasted__Human_RightUpLeg
+    100122: pasted__Human_Spine
+    100124: pasted__Human_Spine1
+    100126: pasted__Human_Spine2
+    100128: polySurface1
+    100130: Undead__Human_Bones
+    100132: //RootNode
+    400000: back
+    400002: front1
+    400004: pasted__Human_Head
+    400006: pasted__Human_Hips
+    400008: pasted__Human_LeftArm
+    400010: pasted__Human_LeftFoot
+    400012: pasted__Human_LeftForeArm
+    400014: pasted__Human_LeftHand
+    400016: pasted__Human_LeftHandIndex1
+    400018: pasted__Human_LeftHandIndex2
+    400020: pasted__Human_LeftHandIndex3
+    400022: pasted__Human_LeftHandIndex4
+    400024: pasted__Human_LeftHandMiddle1
+    400026: pasted__Human_LeftHandMiddle2
+    400028: pasted__Human_LeftHandMiddle3
+    400030: pasted__Human_LeftHandMiddle4
+    400032: pasted__Human_LeftHandPinky1
+    400034: pasted__Human_LeftHandPinky2
+    400036: pasted__Human_LeftHandPinky3
+    400038: pasted__Human_LeftHandPinky4
+    400040: pasted__Human_LeftHandRing1
+    400042: pasted__Human_LeftHandRing2
+    400044: pasted__Human_LeftHandRing3
+    400046: pasted__Human_LeftHandRing4
+    400048: pasted__Human_LeftHandThumb1
+    400050: pasted__Human_LeftHandThumb2
+    400052: pasted__Human_LeftHandThumb3
+    400054: pasted__Human_LeftHandThumb4
+    400056: pasted__Human_LeftLeg
+    400058: pasted__Human_LeftShoulder
+    400060: pasted__Human_LeftToeBase
+    400062: pasted__Human_LeftUpLeg
+    400064: pasted__Human_Neck
+    400066: pasted__Human_RightArm
+    400068: pasted__Human_RightFoot
+    400070: pasted__Human_RightForeArm
+    400072: pasted__Human_RightHand
+    400074: pasted__Human_RightHandIndex1
+    400076: pasted__Human_RightHandIndex2
+    400078: pasted__Human_RightHandIndex3
+    400080: pasted__Human_RightHandIndex4
+    400082: pasted__Human_RightHandMiddle1
+    400084: pasted__Human_RightHandMiddle2
+    400086: pasted__Human_RightHandMiddle3
+    400088: pasted__Human_RightHandMiddle4
+    400090: pasted__Human_RightHandPinky1
+    400092: pasted__Human_RightHandPinky2
+    400094: pasted__Human_RightHandPinky3
+    400096: pasted__Human_RightHandPinky4
+    400098: pasted__Human_RightHandRing1
+    400100: pasted__Human_RightHandRing2
+    400102: pasted__Human_RightHandRing3
+    400104: pasted__Human_RightHandRing4
+    400106: pasted__Human_RightHandThumb1
+    400108: pasted__Human_RightHandThumb2
+    400110: pasted__Human_RightHandThumb3
+    400112: pasted__Human_RightHandThumb4
+    400114: pasted__Human_RightLeg
+    400116: pasted__Human_RightShoulder
+    400118: pasted__Human_RightToeBase
+    400120: pasted__Human_RightUpLeg
+    400122: pasted__Human_Spine
+    400124: pasted__Human_Spine1
+    400126: pasted__Human_Spine2
+    400128: polySurface1
+    400130: Undead__Human_Bones
+    400132: //RootNode
+    2000000: back
+    2000002: front1
+    2100000: lambert1
+    4300000: polySurface1
+    9500000: //RootNode
+    13700000: polySurface1
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

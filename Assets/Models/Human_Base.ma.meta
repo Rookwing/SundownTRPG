@@ -1,0 +1,225 @@
+fileFormatVersion: 2
+guid: 1f29cbdb096baff4c9e325560221c425
+timeCreated: 1525735829
+licenseType: Free
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: back
+    100002: //RootNode
+    100004: Human_Bones
+    100006: Human_Head
+    100008: Human_Hips
+    100010: Human_LeftArm
+    100012: Human_LeftFoot
+    100014: Human_LeftForeArm
+    100016: Human_LeftHand
+    100018: Human_LeftHandIndex1
+    100020: Human_LeftHandIndex2
+    100022: Human_LeftHandIndex3
+    100024: Human_LeftHandIndex4
+    100026: Human_LeftHandMiddle1
+    100028: Human_LeftHandMiddle2
+    100030: Human_LeftHandMiddle3
+    100032: Human_LeftHandMiddle4
+    100034: Human_LeftHandPinky1
+    100036: Human_LeftHandPinky2
+    100038: Human_LeftHandPinky3
+    100040: Human_LeftHandPinky4
+    100042: Human_LeftHandRing1
+    100044: Human_LeftHandRing2
+    100046: Human_LeftHandRing3
+    100048: Human_LeftHandRing4
+    100050: Human_LeftHandThumb1
+    100052: Human_LeftHandThumb2
+    100054: Human_LeftHandThumb3
+    100056: Human_LeftHandThumb4
+    100058: Human_LeftLeg
+    100060: Human_LeftShoulder
+    100062: Human_LeftToeBase
+    100064: Human_LeftUpLeg
+    100066: Human_Neck
+    100068: Human_RightArm
+    100070: Human_RightFoot
+    100072: Human_RightForeArm
+    100074: Human_RightHand
+    100076: Human_RightHandIndex1
+    100078: Human_RightHandIndex2
+    100080: Human_RightHandIndex3
+    100082: Human_RightHandIndex4
+    100084: Human_RightHandMiddle1
+    100086: Human_RightHandMiddle2
+    100088: Human_RightHandMiddle3
+    100090: Human_RightHandMiddle4
+    100092: Human_RightHandPinky1
+    100094: Human_RightHandPinky2
+    100096: Human_RightHandPinky3
+    100098: Human_RightHandPinky4
+    100100: Human_RightHandRing1
+    100102: Human_RightHandRing2
+    100104: Human_RightHandRing3
+    100106: Human_RightHandRing4
+    100108: Human_RightHandThumb1
+    100110: Human_RightHandThumb2
+    100112: Human_RightHandThumb3
+    100114: Human_RightHandThumb4
+    100116: Human_RightLeg
+    100118: Human_RightShoulder
+    100120: Human_RightToeBase
+    100122: Human_RightUpLeg
+    100124: Human_Spine
+    100126: Human_Spine1
+    100128: Human_Spine2
+    100130: polySurface1
+    400000: back
+    400002: //RootNode
+    400004: Human_Bones
+    400006: Human_Head
+    400008: Human_Hips
+    400010: Human_LeftArm
+    400012: Human_LeftFoot
+    400014: Human_LeftForeArm
+    400016: Human_LeftHand
+    400018: Human_LeftHandIndex1
+    400020: Human_LeftHandIndex2
+    400022: Human_LeftHandIndex3
+    400024: Human_LeftHandIndex4
+    400026: Human_LeftHandMiddle1
+    400028: Human_LeftHandMiddle2
+    400030: Human_LeftHandMiddle3
+    400032: Human_LeftHandMiddle4
+    400034: Human_LeftHandPinky1
+    400036: Human_LeftHandPinky2
+    400038: Human_LeftHandPinky3
+    400040: Human_LeftHandPinky4
+    400042: Human_LeftHandRing1
+    400044: Human_LeftHandRing2
+    400046: Human_LeftHandRing3
+    400048: Human_LeftHandRing4
+    400050: Human_LeftHandThumb1
+    400052: Human_LeftHandThumb2
+    400054: Human_LeftHandThumb3
+    400056: Human_LeftHandThumb4
+    400058: Human_LeftLeg
+    400060: Human_LeftShoulder
+    400062: Human_LeftToeBase
+    400064: Human_LeftUpLeg
+    400066: Human_Neck
+    400068: Human_RightArm
+    400070: Human_RightFoot
+    400072: Human_RightForeArm
+    400074: Human_RightHand
+    400076: Human_RightHandIndex1
+    400078: Human_RightHandIndex2
+    400080: Human_RightHandIndex3
+    400082: Human_RightHandIndex4
+    400084: Human_RightHandMiddle1
+    400086: Human_RightHandMiddle2
+    400088: Human_RightHandMiddle3
+    400090: Human_RightHandMiddle4
+    400092: Human_RightHandPinky1
+    400094: Human_RightHandPinky2
+    400096: Human_RightHandPinky3
+    400098: Human_RightHandPinky4
+    400100: Human_RightHandRing1
+    400102: Human_RightHandRing2
+    400104: Human_RightHandRing3
+    400106: Human_RightHandRing4
+    400108: Human_RightHandThumb1
+    400110: Human_RightHandThumb2
+    400112: Human_RightHandThumb3
+    400114: Human_RightHandThumb4
+    400116: Human_RightLeg
+    400118: Human_RightShoulder
+    400120: Human_RightToeBase
+    400122: Human_RightUpLeg
+    400124: Human_Spine
+    400126: Human_Spine1
+    400128: Human_Spine2
+    400130: polySurface1
+    2000000: back
+    2100000: lambert1
+    2100002: lambert2
+    4300000: polySurface1
+    9500000: //RootNode
+    13700000: polySurface1
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
